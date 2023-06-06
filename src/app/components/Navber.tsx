@@ -6,6 +6,7 @@ import {usePathname} from 'next/navigation'
 import PlusIcon from "./ui/icons/PlusIcon";
 import ColorButton from "./ui/ColorButton";
 import { useSession, signIn, signOut } from "next-auth/react";
+import Avatar from "./Avatar";
 
 const ICON_STYLE = "text-3xl hover:cursor-pointer";
 
@@ -30,6 +31,7 @@ const menu = [
 export default function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
+  const user = session?.user;
 
   return (
     <nav className="flex h-12 justify-between items-center">
@@ -45,6 +47,14 @@ export default function Navbar() {
             </Link>
           </li>
         ))}
+
+        {user && (
+          <li>
+            <Link href={`user/${user.username}`}>
+              <Avatar image={user.image} />
+            </Link>
+          </li>
+        )}
         <li>
           {session ? (
             <ColorButton onClick={() => signOut()} text="sign out" />
