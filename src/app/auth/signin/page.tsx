@@ -4,11 +4,13 @@ import { getServerSession } from "next-auth";
 import { getProviders } from "next-auth/react";
 import { redirect } from "next/navigation";
 
+
 type Props = {
   searchParams : {
     callbackUrl: string;
   }
 }
+
 
 export default async function signPage({searchParams: {callbackUrl}}: Props) {
   
@@ -19,6 +21,10 @@ export default async function signPage({searchParams: {callbackUrl}}: Props) {
   }
 
   console.log(session)
+
+  const doc = {
+    _id: ''
+  }
 
   const providers = (await getProviders()) ?? {};
   
