@@ -32,7 +32,6 @@ export default function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const user = session?.user;
-
   return (
     <nav className="flex h-12 justify-between items-center">
       <Link href="/">
@@ -51,7 +50,7 @@ export default function Navbar() {
         {user && (
           <li>
             <Link href={`user/${user.username}`}>
-              <Avatar image={user.image} />
+              <Avatar image={user.image} size="small" highlight={true} />
             </Link>
           </li>
         )}

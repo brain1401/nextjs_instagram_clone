@@ -22,9 +22,6 @@ export default async function signPage({searchParams: {callbackUrl}}: Props) {
 
   console.log(session)
 
-  const doc = {
-    _id: ''
-  }
 
   const providers = (await getProviders()) ?? {};
   
