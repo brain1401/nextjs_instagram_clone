@@ -8,7 +8,7 @@ import { User, UserSchema } from "@/model/user";
 
 export default function FollowingBar() {
 
-  const {data, isLoading, error} = useSWR('api/test')
+  const {data, isLoading, error} = useSWR('api/me')
 
   console.log(data)
 
