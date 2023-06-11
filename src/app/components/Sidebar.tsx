@@ -1,9 +1,13 @@
-import { getMyServerSession } from "@/service/getMyServerSession";
 import Avatar from "./Avatar";
 import { handler } from "../api/auth/[...nextauth]/route";
+import { User } from "@/model/user";
 
-export default async function Sidebar() {
-  const user = await getMyServerSession(handler); 
+type Props = {
+  user: User;
+}
+
+export default async function Sidebar({user}: Props) {
+
 
   return (
     <>
