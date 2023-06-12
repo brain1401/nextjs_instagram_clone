@@ -5,17 +5,20 @@ export type User = {
   image?: string;
 };
 
+
+export type SimpleUser = Pick<User, 'username' | 'image'>
+
 export type UserSchema = {
+  following: SimpleUser[];
+  followers: SimpleUser[];
+  bookmarks: string[];
   username: string;
-  bookmarks: [];
   image: string;
   _id: string;
   _updatedAt: string;
   email: string;
   name: string;
-  followers: [];
   _createdAt: string;
-  following: [];
   _rev: string;
   _type: string;
 };
