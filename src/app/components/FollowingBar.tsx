@@ -1,7 +1,6 @@
 "use client";
 import useSWR from "swr";
 
-import { client } from "@/service/sanity";
 import Avatar from "./Avatar";
 import { User, UserSchema } from "@/model/user";
 import { BarLoader } from "react-spinners";
