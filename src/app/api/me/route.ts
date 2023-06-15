@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { handler } from "../auth/[...nextauth]/route";
 import { getUserByUsername } from "@/service/user";
 
-export async function GET(req: Request) {
+export async function GET() {
   const {data : user, session} = await getMyServerSession(handler);
 
   if(!user){
