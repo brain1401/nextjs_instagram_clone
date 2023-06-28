@@ -1,10 +1,10 @@
-import { User } from "@/model/user";
+import { SessionUser } from "@/model/user";
 import { NextAuthOptions, getServerSession } from "next-auth";
 
 export async function getMyServerSession(authOption: NextAuthOptions) {
   const session = await getServerSession(authOption);
 
-  const data: User = {
+  const data: SessionUser = {
     username: session?.user.email.split("@")[0] || "",
     email: session?.user.email || "",
     name: session?.user.name || "",

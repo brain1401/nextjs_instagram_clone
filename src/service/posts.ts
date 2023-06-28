@@ -1,30 +1,41 @@
-import { SimplePost } from "@/model/post";
-import { client, urlFor } from "./sanity";
+import { ResponsePosts } from "@/model/post";
+import qs from 'qs';
+import axios from "axios";
 
 export async function getFollwingPostsof(username: string) {
-  const simplePostProjection = `
-    ...,
-    "username" : author->username,
-    "userImage" : author->image,
-    "image" : photo,
-    "likes": likes[]->username,
-    "text": comments[0].comment,
-    "comments": count(comments),
-    "id": _id,
-    "createdAt": _createdAt
-  `;
+  const query = qs.stringify({
+    filters: {
+      author: {
+        username: {
+          $eq: username
+        }
+      },
+    },
+    populate: {
+      author: {
+        fields: ['username','userimage']
+      },
+      likes: {
+        fields: ['displayname']
+      },
+      photo: {
+        fields: ['url']
+      },
+      comments: {
+        fields: ['comment']
+      },
+    },
+  });
 
-  return client
-    .fetch(
-      `
-    *[_type == "post" && author->username == "${username}"
-    || author.ref in *[_type == "user" && username == "${username}"].following[]._ref]
-   | order(_createdAt desc){${simplePostProjection}}`
-    )
-    .then((posts) =>
-      posts.map((post: SimplePost) => ({
-        ...post,
-        image: urlFor(post.image),
-      }))
-    );
+  const response = await axios.get(
+    `https://brain1401.duckdns.org:1402/api/insta-posts?${query}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+      },
+    }
+  );
+  const data:ResponsePosts = response.data.data;
+
+  return data;
 }

@@ -11,20 +11,23 @@ export const handler: NextAuthOptions = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ user: { id, name, image, email } }) { 
+    async signIn({ user: { id, name, image, email } }) {
+      //로그인 할 때 실행될 코드블럭
       if (!email) {
         return false;
       }
+      console.log(image)
       addUser({
         id: id,
-        name: name || "",
+        displayname: name || "",
         image: image,
         email,
         username: email.split("@")[0] || "",
       });
       return true;
     },
-    async session({ session }) { //세션이 만들어 질 때 실행됨
+    async session({ session }) {
+      //세션이 만들어 질 때 실행됨
       const user = session?.user;
       if (user) {
         session.user = {

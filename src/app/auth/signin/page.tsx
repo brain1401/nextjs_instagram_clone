@@ -20,7 +20,6 @@ export default async function signPage({searchParams: {callbackUrl}}: Props) {
     redirect('/');
   }
 
-  console.log(session)
 
 
   const providers = (await getProviders()) ?? {};

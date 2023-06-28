@@ -4,17 +4,42 @@ export type Comment = {
   image: string;
 };
 
-export type SimplePost = Omit<FullPost, 'comments'> & {
-  commnets: number;
-}
-
-export type FullPost = {
-  id: string;
-  username: string;
-  userImage: string;
-  image: string;
-  text: string;
-  createdAt: string;
-  likes: string[];
-  commnets: Comment[];
+export type ResponsePost = {
+  id: number;
+  attributes: {
+    author: {
+      data: {
+        id: string;
+        attributes: {
+          username: string;
+          userimage: string;
+        };
+      };
+    };
+    comments: {
+      data: {
+        id: string;
+        attributes: {
+          comment: string;
+        };
+      }[];
+    };
+    createdAt: string;
+    likes: {
+      data: {
+        attributes: {
+          displayname: string;
+        };
+      }[];
+    };
+    photo: {
+      data: {
+        attributes: {
+          url: string;
+        };
+      }[];
+    };
+  };
 };
+
+export type ResponsePosts = ResponsePost[];
