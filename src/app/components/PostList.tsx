@@ -19,9 +19,9 @@ export default function PostList() {
       )}
       {posts && (
         <ul>
-          {posts.map(({attributes}, index) => (
-            <li key={attributes.photo.data[0].attributes.url} className="mb-4">
-              <PostListCard post={attributes} priority={index < 2} />
+          {posts.map((post, index) => (
+            <li key={post.photo[0].url} className="mb-4">
+              <PostListCard post={post} priority={index < 2} />
             </li>
           ))}
         </ul>

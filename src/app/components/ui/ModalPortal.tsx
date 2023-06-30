@@ -10,5 +10,6 @@ export default function ModalPortal ({children}: Props){ //children에 전달한
   }
 
   const node = document.getElementById('portal') as Element;
-  return reactDom.createPortal(children, node)
+  
+  return reactDom.createPortal(children, node) //children을 node에 연결해준다
 }

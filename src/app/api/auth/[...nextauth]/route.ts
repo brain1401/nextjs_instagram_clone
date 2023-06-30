@@ -2,7 +2,7 @@ import { addUser } from "@/service/user";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-export const handler: NextAuthOptions = NextAuth({
+export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
@@ -16,7 +16,6 @@ export const handler: NextAuthOptions = NextAuth({
       if (!email) {
         return false;
       }
-      console.log(image)
       addUser({
         id: id,
         displayname: name || "",
@@ -42,6 +41,8 @@ export const handler: NextAuthOptions = NextAuth({
   pages: {
     signIn: "/auth/signin",
   },
-});
+};
+
+export const handler: NextAuthOptions = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

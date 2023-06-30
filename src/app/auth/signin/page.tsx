@@ -1,4 +1,4 @@
-import { handler } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import Signin from "@/app/components/Signin";
 import { getServerSession } from "next-auth";
 import { getProviders } from "next-auth/react";
@@ -14,7 +14,7 @@ type Props = {
 
 export default async function signPage({searchParams: {callbackUrl}}: Props) {
   
-  const session = await getServerSession(handler);
+  const session = await getServerSession(authOptions);
 
   if(session) {
     redirect('/');

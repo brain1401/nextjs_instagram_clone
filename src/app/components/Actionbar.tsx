@@ -1,14 +1,15 @@
 import HeartIcon from "./ui/icons/HeartIcon";
 import BookmarkIcon from "./ui/icons/BookmarkIcon";
 import { parseDate } from "@/util/date";
+import { ResponsePost } from "@/model/post";
 
 type Props = {
-  likes: string[],
-  username: string;
-  text: string;
+  likes: ResponsePost['likes']
+  displayname: string;
+  text?: string;
   createdAt: string;
 }
-export default function Actionbar({likes, username, text, createdAt}: Props) {
+export default function Actionbar({likes, displayname, text, createdAt}: Props) {
   return (
     <>
       <div className="flex justify-between my-2 px-4">
@@ -22,10 +23,12 @@ export default function Actionbar({likes, username, text, createdAt}: Props) {
         <BookmarkIcon />
       </div>
       <div className="m-3">
-        <p className="mt-10 mb-8">
-          <span className="font-bold mr-1">{username}</span>
-          {text}
-        </p>
+        {text && (
+          <p className="mt-10 mb-8">
+            <span className="font-bold mr-1">{displayname}</span>
+            {text}
+          </p>
+        )}
         <p className="text-xs text-neutral-500 my-4">{parseDate(createdAt)}</p>
       </div>
     </>

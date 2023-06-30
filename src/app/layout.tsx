@@ -19,17 +19,19 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${openSans.className} w-full max-w-screen-xl overflow-auto mx-auto`}
+        className={`${openSans.className}bg-neutral-50 w-full overflow-auto`}
       >
         <AuthContext>
           <header className="sticky top-0 bg-white z-10 border-b">
-            <Navbar />
+            <div className="max-w-screen-xl mx-auto">
+              <Navbar />
+            </div>
           </header>
-          <main className="bg-neutral-50 w-full flex justify-center min-h-full">
+          <main className="w-full flex justify-center">
             <SWRConfigContext>{children}</SWRConfigContext>
           </main>
         </AuthContext>
-        <div id='portal'/>
+        <div id="portal" />
       </body>
     </html>
   );

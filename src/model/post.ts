@@ -5,41 +5,31 @@ export type Comment = {
 };
 
 export type ResponsePost = {
-  id: number;
-  attributes: {
-    author: {
-      data: {
-        id: string;
-        attributes: {
-          username: string;
-          userimage: string;
-        };
-      };
-    };
-    comments: {
-      data: {
-        id: string;
-        attributes: {
-          comment: string;
-        };
-      }[];
-    };
-    createdAt: string;
-    likes: {
-      data: {
-        attributes: {
-          displayname: string;
-        };
-      }[];
-    };
-    photo: {
-      data: {
-        attributes: {
-          url: string;
-        };
-      }[];
-    };
+  author: {
+    id: number;
+    userimage: string;
+    displayname: string;
   };
+  comments: {
+    author: {
+      id: number;
+      displayname: string;
+      userimage: string;
+    };
+    comment: string;
+    isPostFirstComment: boolean;
+  }[];
+  createdAt: string;
+  id: number;
+  likes: {
+    displayname: string;
+    id: number;
+  }[];
+  photo: {
+    id: number;
+    url: string;
+  }[];
+  publishedAt: string;
+  updatedAt: string;
 };
-
 export type ResponsePosts = ResponsePost[];

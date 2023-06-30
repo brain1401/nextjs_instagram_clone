@@ -1,6 +1,6 @@
+import { ResponseUser } from "@/model/user";
 import axios from "axios";
 import qs from "qs";
-import { ResponseUsers,ResponseUser, UserData } from "@/model/user";
 type OAuthUser = {
   id: string;
   email: string;
@@ -16,34 +16,17 @@ export async function addUser({
   displayname,
   image,
 }: OAuthUser) {
-  // return client.createIfNotExists({
-  //   _id: id,
-  //   _type: "user",
-  //   username: username,
-  //   email: email,
-  //   image: image,
-  //   name: name,
-  //   following: [],
-  //   followers: [],
-  //   bookmarks: [],
-  // });
   const user = await getUserByUsername(username);
 
-  console.log("user 데이터 : "+user);
-
-  if (user.length === 0) {
-    console.log("!user 블록이 실행됨")
-    
-    const data: UserData = {
+  if (!user) {
+    const data = {
       username: username,
       email: email,
       displayname: displayname,
       userimage: image,
     };
 
-    console.log("등록할 userimage 타입 : "+typeof(data.userimage));
-
-    const response = await axios.post<ResponseUser>(
+    const response = await axios.post(
       "https://brain1401.duckdns.org:1402/api/insta-users",
       {
         data: data,
@@ -82,7 +65,6 @@ export async function getUserByUsername(username: string) {
       },
     }
   );
-  const data:ResponseUsers = response.data.data;
 
-  return data;
+  return response.data.data[0] as ResponseUser;
 }

@@ -1,16 +1,16 @@
-import { getMyServerSession } from "@/service/getMyServerSessionData";
 import { NextResponse } from "next/server";
-import { handler } from "../auth/[...nextauth]/route";
 import { getFollwingPostsof } from "@/service/posts";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function GET() {
-  const { data: user } = await getMyServerSession(handler);
+  const session = await getServerSession(authOptions);
 
-  if (!user) {
+  if (!session) {
     return new Response("인증 에러!", { status: 401 });
   }
 
-  return getFollwingPostsof(user.username).then((data) =>
+  return getFollwingPostsof(session.user.username).then((data) =>
     NextResponse.json(data)
   );
 }

@@ -1,16 +1,16 @@
-import { getMyServerSession } from "@/service/getMyServerSessionData";
 import { NextResponse } from "next/server";
-import { handler } from "../auth/[...nextauth]/route";
 import { getUserByUsername } from "@/service/user";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function GET() {
-  const {data : user, session} = await getMyServerSession(handler);
+  const session = await getServerSession(authOptions);
 
-  if(!user){
-    return new Response('인증 에러!', {status: 401});
+  if (!session) {
+    return new Response("인증 에러!", { status: 401 });
   }
 
-
-  return getUserByUsername(user.username)
-  .then(data => NextResponse.json(data))
+  return getUserByUsername(session.user.username).then((data) =>
+    NextResponse.json(data)
+  );
 }

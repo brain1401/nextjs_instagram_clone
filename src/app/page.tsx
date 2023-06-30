@@ -1,13 +1,12 @@
 import { getServerSession } from "next-auth";
 import FollowingBar from "./components/FollowingBar";
 import PostList from "./components/PostList";
-import { handler } from "./api/auth/[...nextauth]/route";
 import Sidebar from "./components/Sidebar";
 import { redirect } from "next/navigation";
-import { getMyServerSession } from "@/service/getMyServerSessionData";
+import { authOptions } from "./api/auth/[...nextauth]/route";
 
 export default async function HomePage() {
-  const {data, session} = await getMyServerSession(handler);
+  const session = await getServerSession(authOptions)
  
   if (!session) {
     //로그인한 유저가 없다면 /auth/singin페이지로 리다이렉트 시킴
@@ -21,7 +20,7 @@ export default async function HomePage() {
         {session && <PostList />}
       </div>
 
-      <div className="basis-1/4 ml-8">{session && <Sidebar user={data} />}</div>
+      <div className="basis-1/4 ml-8">{session && <Sidebar user={session.user} />}</div>
     </section>
   );
 }
