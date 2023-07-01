@@ -2,12 +2,12 @@ import { ResponsePost, ResponsePosts } from "@/model/post";
 import qs from 'qs';
 import axios from "axios";
 
-export async function getFollwingPostsof(username: string) {
+export async function getFollwingPostsof(email: string | null | undefined) {
   const query = qs.stringify({
     filters: {
       author: {
-        username: {
-          $eq: username
+        email: {
+          $eq: email
         }
       },
     },

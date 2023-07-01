@@ -1,5 +1,3 @@
-import { StringLiteral } from "typescript";
-
 export type SessionUser = {
   name: string;
   username: string;
@@ -18,18 +16,19 @@ export type ResponseUser = {
     email: string;
     id: number;
     userimage: string;
-    username: string;
+    realname: string;
   }[];
   followings: {
     displayname: string;
     email: string;
     id: number;
     userimage: string;
-    username: string;
+    realname: string;
   }[];
   id: number;
   publishedAt: string;
   updatedAt: string;
   userimage: string;
-  username: string;
+  realname: string;
+  session_id: string;
 };

@@ -5,22 +5,22 @@ type OAuthUser = {
   id: string;
   email: string;
   displayname: string;
-  username: string;
   image?: string | null;
 };
 
 export async function addUser({
   id,
-  username,
   email,
   displayname,
   image,
 }: OAuthUser) {
-  const user = await getUserByUsername(username);
+  const user = await getUserByEmail(email);
 
+  console.log("Login 시 user데이터")
+  console.log(user);
   if (!user) {
     const data = {
-      username: username,
+      session_id: id,
       email: email,
       displayname: displayname,
       userimage: image,
@@ -38,21 +38,40 @@ export async function addUser({
       }
     );
   }
+
+  if (!user.session_id) {
+    console.log("!user.session 실행됨")
+    const data = {
+      session_id: id,
+    };
+
+    const response = await axios.put(
+      `https://brain1401.duckdns.org:1402/api/insta-users/${user.id}`,
+      {
+        data: data,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+        },
+      }
+    );
+  }
 }
 
-export async function getUserByUsername(username: string) {
+export async function getUserByEmail(email: string | null | undefined) {
   const query = qs.stringify({
     filters: {
-      username: {
-        $eq: username,
+      email: {
+        $eq: email,
       },
     },
     populate: {
       followings: {
-        fields: ["email", "username", "userimage", "displayname"],
+        fields: ["email", "realname", "userimage", "displayname"],
       },
       followers: {
-        fields: ["email", "username", "userimage", "displayname"],
+        fields: ["email", "realname", "userimage", "displayname"],
       },
     },
   });
@@ -65,6 +84,24 @@ export async function getUserByUsername(username: string) {
       },
     }
   );
-
   return response.data.data[0] as ResponseUser;
 }
+
+export async function getUsers() {
+  const query = qs.stringify({
+    populate: "*",
+  });
+
+  const response = await axios.get(
+    `https://brain1401.duckdns.org:1402/api/insta-users?${query}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+      },
+    }
+  );
+
+  return response.data.data as ResponseUser[]
+}
+
+// export function filterUsersByAnyName

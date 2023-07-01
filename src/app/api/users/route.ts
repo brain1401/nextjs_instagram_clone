@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getUserByEmail } from "@/service/user";
+import { getUsers } from "@/service/user";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 
@@ -9,8 +9,8 @@ export async function GET() {
   if (!session) {
     return new Response("인증 에러!", { status: 401 });
   }
-  console.log(session.user?.email);
-  return getUserByEmail(session.user?.email).then((data) =>
+
+  return getUsers().then((data) =>
     NextResponse.json(data)
   );
 }

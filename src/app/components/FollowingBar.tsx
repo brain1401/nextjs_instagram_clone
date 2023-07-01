@@ -1,11 +1,10 @@
 "use client";
-import useSWR from "swr";
-
 import Avatar from "./Avatar";
 import { BarLoader } from "react-spinners";
 import Link from "next/link";
 import ScrollableBar from "./ui/ScrollableBar";
 import { ResponseUser } from "@/model/user";
+import useSWR from 'swr';
 
 export default function FollowingBar() {
   const {
@@ -29,8 +28,8 @@ export default function FollowingBar() {
         <ScrollableBar itemClassname="flex flex-col items-center w-20">
           {user.followings.map((user) => (
             <Link
-              href={`user/${user.username}`}
-              key={user.username}
+              href={`user/${user.displayname}`}
+              key={user.realname}
             >
               <Avatar image={user.userimage} highlight />
               <p className="w-full text-sm text-center text-ellipsis overflow-hidden">

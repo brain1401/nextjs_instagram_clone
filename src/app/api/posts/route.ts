@@ -10,7 +10,7 @@ export async function GET() {
     return new Response("인증 에러!", { status: 401 });
   }
 
-  return getFollwingPostsof(session.user.username).then((data) =>
+  return getFollwingPostsof(session.user?.email).then((data) =>
     NextResponse.json(data)
   );
 }

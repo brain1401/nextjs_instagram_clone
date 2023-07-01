@@ -1,6 +1,5 @@
 'use client'
 import { ResponsePost } from "@/model/post";
-import Avatar from "./Avatar";
 import Image from "next/image";
 import CommentForm from "./CommentForm";
 import Actionbar from "./Actionbar";

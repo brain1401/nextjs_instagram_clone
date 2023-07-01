@@ -1,4 +1,4 @@
-import { addUser } from "@/service/user";
+import { addUser, getUserByEmail } from "@/service/user";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -16,26 +16,14 @@ export const authOptions: NextAuthOptions = {
       if (!email) {
         return false;
       }
+      console.log(id);
       addUser({
         id: id,
         displayname: name || "",
         image: image,
         email,
-        username: email.split("@")[0] || "",
       });
       return true;
-    },
-    async session({ session }) {
-      //세션이 만들어 질 때 실행됨
-      const user = session?.user;
-      if (user) {
-        session.user = {
-          ...user,
-          username: user.email?.split("@")[0] || "",
-        };
-      }
-
-      return session;
     },
   },
   pages: {

@@ -1,20 +1,28 @@
-import { getUserByUsername } from "@/service/user";
+"use client";
 import Avatar from "./Avatar";
-import { SessionUser } from "@/model/user";
+import useSWR from "swr";
+import { ResponseUser } from "@/model/user";
 
-type Props = {
-  user: SessionUser;
-}
+export default function Sidebar() {
 
-export default async function Sidebar({user}: Props) {
+  const {
+    data: user,
+    isLoading: loading,
+    error,
+  } = useSWR<ResponseUser>("api/me");
 
+  if(loading) {
+    return <h1>로딩중</h1>
+  }
+  
   return (
     <>
+     
       <div className="flex items-center">
-        {user?.image && <Avatar image={user.image}/>}
+        {user?.userimage && <Avatar image={user.userimage}/>}
         <div className="ml-4">
-          <p className="font-bold">{user.name}</p>
-          <p className="text-lg text-neutral-500 leading-4">{user?.username}</p>
+          <p className="font-bold">{user?.displayname}</p>
+          <p className="text-lg text-neutral-500 leading-4">{user?.realname}</p>
         </div>
       </div>
       <p className="text-sm text-neutral-500 mt-8">
