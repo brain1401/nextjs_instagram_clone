@@ -16,9 +16,6 @@ export default function PostDetail({ post }: Props) {
 
   const { data } = useSWR<ResponsePost>(`/api/posts/${id}`);
 
-  console.log(`포스트 id : ${id}의 데이터`);
-  console.log(data);
-
   if (!data) {
     return <div>로딩중!</div>;
   }

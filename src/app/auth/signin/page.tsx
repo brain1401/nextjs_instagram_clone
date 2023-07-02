@@ -21,7 +21,6 @@ export default async function signPage({searchParams: {callbackUrl}}: Props) {
   }
 
 
-
   const providers = (await getProviders()) ?? {};
   
   return (

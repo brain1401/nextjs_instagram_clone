@@ -8,8 +8,6 @@ import { ResponsePosts } from "@/model/post";
 export default function PostList() {
   const { data: posts, isLoading: loading } = useSWR<ResponsePosts>("api/posts");
   
-  console.log("post 데이터 : ");
-  console.log(posts);
   return (
     <section>
       {loading && (

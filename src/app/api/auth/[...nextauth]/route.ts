@@ -1,4 +1,7 @@
-import { addUser, getUserByEmail } from "@/service/user";
+import {
+  addUserOrValidateSessionIdIfUserDeosNotExist,
+  getUserByEmail,
+} from "@/service/user";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
@@ -11,18 +14,18 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user: { id, name, image, email } }) {
-      //로그인 할 때 실행될 코드블럭
+    async signIn({ user: { id, image, email } }) {
+      //로그인 될 때 실행될 코드블럭
       if (!email) {
         return false;
       }
-      console.log(id);
-      addUser({
-        id: id,
-        displayname: name || "",
-        image: image,
+
+      addUserOrValidateSessionIdIfUserDeosNotExist({
+        id,
+        image,
         email,
       });
+
       return true;
     },
   },

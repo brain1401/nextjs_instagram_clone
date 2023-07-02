@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.195",
     "@types/node": "^20.3.3",
     "@types/qs": "^6.9.7",
     "@types/react": "18.2.8",
@@ -17,6 +18,7 @@
     "axios": "^1.4.0",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.4",
+    "lodash": "^4.17.21",
     "next": "^13.4.5",
     "next-auth": "^4.22.1",
     "postcss": "8.4.24",

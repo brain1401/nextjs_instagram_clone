@@ -7,9 +7,9 @@ export async function GET() {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return new Response("인증 에러!", { status: 401 });
+    return NextResponse.json({response: "인증 에러!"}, { status: 401 });
   }
-  console.log(session.user?.email);
+  
   return getUserByEmail(session.user?.email).then((data) =>
     NextResponse.json(data)
   );

@@ -12,9 +12,6 @@ export default function FollowingBar() {
     isLoading: loading,
     error,
   } = useSWR<ResponseUser>("api/me");
-
-  console.log("유저 데이터")
-  console.log(user)
   return (
     <section className="w-full flex justify-center items-center p-4 shadow-sm shadow-neutral-300 bm-4 rounded-lg min-h-[90px] overflow-x-auto relative z-0">
       {loading ? (
