@@ -1,38 +1,39 @@
 "use client";
-import { ResponseUser, SearchUserType, SearchUsersType } from "@/model/user";
+import { SearchUserType, SearchUsersType } from "@/model/user";
 import { useState, useEffect } from "react";
 import { BeatLoader } from "react-spinners";
 import useSWR from "swr";
 import UserCard from "../components/UserCard";
 import SearchBar from "../components/SearchBar";
+import useDebounce from "@/hooks/debounce";
 
 export default function Search() {
-  const { data: users, isLoading, error } = useSWR<SearchUsersType>("api/search");
   const [input, setInput] = useState("");
-  const [filteredData, setFilteredData] = useState<SearchUserType[]>([]);
+  const deboundcedKeyword = useDebounce(input);
 
-  useEffect(() => {
-    const newFilteredData = users && users.filter((user) => {
-      if (user.displayname.includes(input) || user.realname.includes(input)) {
-        return true;
-      }
-    })
-    
-    newFilteredData && setFilteredData(newFilteredData)
-  }, [input, users]);
-
+  const {
+    data: users,
+    isLoading,
+    error,
+  } = useSWR<SearchUsersType>(`/api/search/${deboundcedKeyword}`);
+  
+  console.log(users);
   return (
-    <section>
-      <SearchBar state={input} setState={setInput} />
-      <ul>
-        {isLoading && <BeatLoader className="text-center mt-10"/>}
+    <section className="text-center">
+      <SearchBar state={input} setState={setInput} className="mb-5" />
+      {isLoading && <BeatLoader className="mt-10" />}
+      <ul className="text-start">
         {!isLoading &&
-          filteredData?.map((user) => (
+          users &&
+          users.map((user) => (
             <li key={user.id}>
               <UserCard user={user} />
             </li>
           ))}
       </ul>
+      {!isLoading && !error && users && users.length === 0 && (
+        <p className="font-bold text-xl">찾는 사용자가 없습니다!</p>
+      )}
     </section>
   );
 }

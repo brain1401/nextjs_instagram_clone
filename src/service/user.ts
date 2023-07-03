@@ -206,24 +206,16 @@ export async function searchUsers(keyword?: string) {
   const keywordQuery = keyword
     ? qs.stringify({
         fields: ["realname", "displayname", "userimage"],
-        filter: {
+        filters: {
           $or: [
             {
               realname: {
-                $eq: keyword,
-                $notNull: true,
-              },
-              displayname: {
-                $notNull: true,
+                $containsi: keyword,
               },
             },
             {
-              dispayname: {
-                $eq: keyword,
-                $notNull: true,
-              },
               displayname: {
-                $notNull: true,
+                $containsi: keyword,
               },
             },
           ],
@@ -237,32 +229,28 @@ export async function searchUsers(keyword?: string) {
           },
         },
       })
-    : "";
-
-  const normalQuery = qs.stringify({
-    fields: ["realname", "displayname", "userimage"],
-    filters: {
-      displayname: {
-        $notNull: true,
-      },
-      realname: {
-        $notNull: true,
-      },
-    },
-    populate: {
-      followings: {
-        fields: ["displayname"],
-      },
-      followers: {
-        fields: ["displayname"],
-      },
-    },
-  });
+    : qs.stringify({
+        fields: ["realname", "displayname", "userimage"],
+        filters: {
+          displayname: {
+            $notNull: true,
+          },
+          realname: {
+            $notNull: true,
+          },
+        },
+        populate: {
+          followings: {
+            fields: ["displayname"],
+          },
+          followers: {
+            fields: ["displayname"],
+          },
+        },
+      });
 
   const response = await axios.get(
-    keyword
-      ? `https://brain1401.duckdns.org:1402/api/insta-users?${keywordQuery}`
-      : `https://brain1401.duckdns.org:1402/api/insta-users?${normalQuery}`,
+    `https://brain1401.duckdns.org:1402/api/insta-users?${keywordQuery}`,
     {
       headers: {
         Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
@@ -278,5 +266,8 @@ export async function searchUsers(keyword?: string) {
     };
   });
 
-  return data as Omit<ResponseUser[], 'followings' | 'followers'> & {followings: number; followers: number};
+  return data as Omit<ResponseUser[], "followings" | "followers"> & {
+    followings: number;
+    followers: number;
+  };
 }
