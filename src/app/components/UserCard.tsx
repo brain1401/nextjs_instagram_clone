@@ -1,9 +1,9 @@
-import { ResponseUser } from "@/model/user";
+import { SearchUserType } from "@/model/user";
 import Avatar from "./Avatar";
 import Link from "next/link";
 
 type Props = {
-  user: ResponseUser;
+  user: SearchUserType;
 }
 
 export default function UserCard({user}: Props) {
@@ -14,7 +14,7 @@ export default function UserCard({user}: Props) {
       <div className="flex flex-col ml-3">
         <span className="font-bold">{user.displayname}</span>
         <span>{user.realname}</span>
-        <span>{`${user.followers.length}팔로워 ${user.followings.length}팔로잉`}</span>
+        <span>{`${user.followers}팔로워 ${user.followings}팔로잉`}</span>
       </div>
     </Link>
   );

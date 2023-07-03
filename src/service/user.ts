@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { ResponseUser } from "@/model/user";
+import { ResponseUser, ResponseUsers } from "@/model/user";
 import axios from "axios";
 import { getServerSession } from "next-auth";
 import qs from "qs";
@@ -17,7 +17,6 @@ export async function addUserOrValidateSessionIdIfUserDeosNotExist({
   const user = await getUserByEmail(email);
 
   if (!user) {
-
     const data = {
       session_id: id,
       email: email,
@@ -87,6 +86,14 @@ export async function getUserByEmail(email: string | null | undefined) {
 
 export async function getUsers() {
   const query = qs.stringify({
+    filters: {
+      displayname: {
+        $notNull: true,
+      },
+      realname: {
+        $notNull: true,
+      },
+    },
     populate: "*",
   });
 
@@ -181,7 +188,7 @@ export async function setUserNamesByEmail(
   const data = {
     displayname: displayname,
     realname: realname,
-  }
+  };
   const response = await axios.put(
     `https://brain1401.duckdns.org:1402/api/insta-users/${user.id}`,
     {
@@ -193,4 +200,83 @@ export async function setUserNamesByEmail(
       },
     }
   );
+}
+
+export async function searchUsers(keyword?: string) {
+  const keywordQuery = keyword
+    ? qs.stringify({
+        fields: ["realname", "displayname", "userimage"],
+        filter: {
+          $or: [
+            {
+              realname: {
+                $eq: keyword,
+                $notNull: true,
+              },
+              displayname: {
+                $notNull: true,
+              },
+            },
+            {
+              dispayname: {
+                $eq: keyword,
+                $notNull: true,
+              },
+              displayname: {
+                $notNull: true,
+              },
+            },
+          ],
+        },
+        populate: {
+          followings: {
+            fields: ["displayname"],
+          },
+          followers: {
+            fields: ["displayname"],
+          },
+        },
+      })
+    : "";
+
+  const normalQuery = qs.stringify({
+    fields: ["realname", "displayname", "userimage"],
+    filters: {
+      displayname: {
+        $notNull: true,
+      },
+      realname: {
+        $notNull: true,
+      },
+    },
+    populate: {
+      followings: {
+        fields: ["displayname"],
+      },
+      followers: {
+        fields: ["displayname"],
+      },
+    },
+  });
+
+  const response = await axios.get(
+    keyword
+      ? `https://brain1401.duckdns.org:1402/api/insta-users?${keywordQuery}`
+      : `https://brain1401.duckdns.org:1402/api/insta-users?${normalQuery}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+      },
+    }
+  );
+
+  const data = response.data.data.map((item: ResponseUser) => {
+    return {
+      ...item,
+      followings: item.followings.length,
+      followers: item.followers.length,
+    };
+  });
+
+  return data as Omit<ResponseUser[], 'followings' | 'followers'> & {followings: number; followers: number};
 }

@@ -32,3 +32,15 @@ export type ResponseUser = {
   realname: string;
   session_id: string;
 };
+
+export type ResponseUsers = {
+  data: ResponseUser[],
+}
+
+export type SearchUsersType = SearchUserType[]
+
+
+export type SearchUserType = Omit<
+  ResponseUser,
+  "followings" | "followers"
+> & { followings: number; followers: number };

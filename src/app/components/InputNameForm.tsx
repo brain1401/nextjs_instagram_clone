@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
-import { ClipLoader } from "react-spinners";
 
 type Props = {
   type: "Displayname" | "Realname";
@@ -14,7 +13,7 @@ type Props = {
 export default function InputNameForm({
   type,
   isValid,
-  setIsValid,
+  setIsValid, 
   inputName,
   setInputName,
 }: Props) {
