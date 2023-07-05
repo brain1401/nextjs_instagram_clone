@@ -1,6 +1,6 @@
 "use client";
-import { SearchUserType, SearchUsersType } from "@/model/user";
-import { useState, useEffect } from "react";
+import {  SearchUsers } from "@/model/user";
+import { useState } from "react";
 import { BeatLoader } from "react-spinners";
 import useSWR from "swr";
 import UserCard from "../components/UserCard";
@@ -15,9 +15,8 @@ export default function Search() {
     data: users,
     isLoading,
     error,
-  } = useSWR<SearchUsersType>(`/api/search/${deboundcedKeyword}`);
+  } = useSWR<SearchUsers>(`/api/search/${deboundcedKeyword}`);
   
-  console.log(users);
   return (
     <section className="text-center">
       <SearchBar state={input} setState={setInput} className="mb-5" />

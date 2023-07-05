@@ -1,4 +1,4 @@
-type AvatarSize = "small" | "medium" | "large";
+type AvatarSize = "small" | "medium" | "large" | "xl";
 type Props = {
   image?: string | null;
   size?: AvatarSize;
@@ -43,6 +43,8 @@ function getContainerSize(size: AvatarSize): string {
       return "w-11 h-11";
     case "large":
       return "w-[68px] h-[68px]";
+    case "xl":
+      return "w-[7.5rem] h-[7.5rem]"
   }
 }
 
@@ -53,6 +55,8 @@ function getImageSizeStyle(size: AvatarSize): string {
     case "medium":
       return "w-[42px] h-[42px] p-[0.1rem]";
     case "large":
-      return "w-16 h-16 p=[0.2rem]";
+      return "w-16 h-16 p-[0.2rem]";
+    case 'xl':
+      return "w-[7rem] h-[7rem] p-[0.14rem]"
   }
 }

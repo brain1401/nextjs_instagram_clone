@@ -5,6 +5,7 @@ import Actionbar from "./Actionbar";
 import CommentForm from "./CommentForm";
 import Avatar from "./Avatar";
 import useSWR from "swr";
+import { BeatLoader } from "react-spinners";
 
 type Props = {
   post: ResponsePost;
@@ -17,7 +18,7 @@ export default function PostDetail({ post }: Props) {
   const { data } = useSWR<ResponsePost>(`/api/posts/${id}`);
 
   if (!data) {
-    return <div>로딩중!</div>;
+    return <BeatLoader size={30} className="mt-32 text-center"/>
   }
   return (
     <section className="flex w-full h-full">

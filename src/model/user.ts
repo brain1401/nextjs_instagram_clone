@@ -1,12 +1,3 @@
-export type SessionUser = {
-  name: string;
-  username: string;
-  email: string;
-  image?: string | null;
-};
-
-export type SimpleSessionUser = Pick<SessionUser, "username" | "image">;
-
 export type ResponseUser = {
   createdAt: string;
   displayname: string;
@@ -37,10 +28,22 @@ export type ResponseUsers = {
   data: ResponseUser[],
 }
 
-export type SearchUsersType = SearchUserType[]
+export type SearchUsers = SearchUser[]
 
 
-export type SearchUserType = Omit<
+export type SearchUser = Omit<
   ResponseUser,
   "followings" | "followers"
 > & { followings: number; followers: number };
+
+export type ProfileUser = Omit<ResponseUser, "followings" | "followers"> & {
+  followings: {
+    id: number;
+    displayname: string;
+  }[];
+  followers: {
+    id: number;
+    displayname: string;
+  }[];
+  insta_posts: {id:number;}[]
+};

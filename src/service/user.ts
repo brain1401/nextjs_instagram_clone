@@ -1,7 +1,5 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { ResponseUser, ResponseUsers } from "@/model/user";
+import { ResponseUser, ProfileUser } from "@/model/user";
 import axios from "axios";
-import { getServerSession } from "next-auth";
 import qs from "qs";
 type OAuthUser = {
   id: string;
@@ -37,7 +35,6 @@ export async function addUserOrValidateSessionIdIfUserDeosNotExist({
 
     return true;
   } else if (!user.session_id) {
-    console.log("!user.session 실행됨");
     const data = {
       session_id: id,
     };
@@ -56,7 +53,7 @@ export async function addUserOrValidateSessionIdIfUserDeosNotExist({
   }
 }
 
-export async function getUserByEmail(email: string | null | undefined) {
+export async function getUserByEmail(email: string) {
   const query = qs.stringify({
     filters: {
       email: {
@@ -81,7 +78,7 @@ export async function getUserByEmail(email: string | null | undefined) {
       },
     }
   );
-  return response.data.data[0] as ResponseUser;
+  return response.data.data[0] as ResponseUser | null;
 }
 
 export async function getUsers() {
@@ -189,7 +186,7 @@ export async function setUserNamesByEmail(
     displayname: displayname,
     realname: realname,
   };
-  const response = await axios.put(
+  const response = user && await axios.put(
     `https://brain1401.duckdns.org:1402/api/insta-users/${user.id}`,
     {
       data: data,
@@ -270,4 +267,37 @@ export async function searchUsers(keyword?: string) {
     followings: number;
     followers: number;
   };
+}
+
+export async function getUserForProfile(displayname: string) {
+  const query = qs.stringify({
+    filters: {
+      displayname: {
+        $eq: displayname,
+      },
+    },
+    populate: {
+      followings: {
+        fields: ["displayname"],
+      },
+      followers: {
+        fields: ["displayname"],
+      },
+      insta_posts: {
+        fields: ["id"]
+      }
+
+    },
+  });
+
+  const response = await axios.get(
+    `https://brain1401.duckdns.org:1402/api/insta-users?${query}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+      },
+    }
+  );
+
+  return response.data.data[0] as ProfileUser;
 }
