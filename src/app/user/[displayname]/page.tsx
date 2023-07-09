@@ -1,14 +1,20 @@
 import UserPosts from "@/app/components/UserPosts";
 import UserProfile from "@/app/components/UserProfile";
-import { getUserForProfile} from "@/service/user";
+import { getUserForProfile } from "@/service/user";
+import { Metadata } from "next";
+import { cache } from "react";
 
 type Props = {
   params: { displayname: string };
 };
 
+const getUser = cache(async (displayname: string) =>
+  getUserForProfile(displayname)
+);
+
 export default async function UserPage({ params }: Props) {
   const displayanme = params.displayname;
-  const user = await getUserForProfile(displayanme);
+  const user = await getUser(displayanme);
 
   return (
     <>
@@ -16,7 +22,7 @@ export default async function UserPage({ params }: Props) {
         <section className="w-full">
           <UserProfile user={user} />
           <UserPosts user={user} />
-        </section >
+        </section>
       ) : (
         <p>
           유저{" "}
@@ -28,4 +34,14 @@ export default async function UserPage({ params }: Props) {
       )}
     </>
   );
+}
+
+export async function generateMetadata({
+  params: { displayname },
+}: Props): Promise<Metadata> {
+  const user = await getUser(displayname);
+  return {
+    title: `${user.realname} (@${user.displayname}) · Instagram 사진`,
+    description: `${user.realname}의 모든 Instagram 포스트`,
+  };
 }
