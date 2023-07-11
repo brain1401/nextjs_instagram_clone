@@ -6,6 +6,7 @@ import ModalPortal from "./ui/ModalPortal";
 import PostModal from "./PostModal";
 import PostDetail from "./PostDetail";
 import { signIn, useSession } from "next-auth/react";
+import { KeyedMutator } from "swr";
 
 type Props = {
   post: ResponsePost;
@@ -41,7 +42,7 @@ export default function PostGridCard({ post, priority = false }: Props) {
       {openModal && (
         <ModalPortal>
           <PostModal onClose={() => setOpenModal(false)}>
-            <PostDetail post={post} />
+            <PostDetail post={post}/>
           </PostModal>
         </ModalPortal>
       )}

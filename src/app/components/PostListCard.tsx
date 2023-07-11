@@ -1,5 +1,5 @@
 'use client'
-import { ResponsePost } from "@/model/post";
+import { ResponsePost, ResponsePosts } from "@/model/post";
 import Image from "next/image";
 import CommentForm from "./CommentForm";
 import Actionbar from "./Actionbar";
@@ -8,6 +8,7 @@ import ModalPortal from "./ui/ModalPortal";
 import PostModal from "./PostModal";
 import PostDetail from "./PostDetail";
 import PostUserAvatar from "./PostUserAvatar";
+import { KeyedMutator } from "swr";
 
 type Props = {
   post: ResponsePost;
@@ -15,12 +16,15 @@ type Props = {
 };
 
 export default function PostListCard({ post, priority = false }: Props) {
-  const {author, comments , photo, createdAt, likes } = post;
-  const [openModal, setOpenModal] = useState(false)
+  const { author, comments, photo, createdAt, likes, id } = post;
+  const [openModal, setOpenModal] = useState(false);
 
   return (
     <article className="rounded-lg shadow-md border border-gray-200">
-      <PostUserAvatar displayname={author.displayname} userimage={author.userimage}/>
+      <PostUserAvatar
+        displayname={author.displayname}
+        userimage={author.userimage}
+      />
       <Image
         src={`https://brain1401.duckdns.org:1402/${photo[0].url}`}
         className="w-full object-cover aspect-square cursor-pointer"
@@ -31,16 +35,13 @@ export default function PostListCard({ post, priority = false }: Props) {
         onClick={() => setOpenModal(true)}
       />
       <Actionbar
-        likes={likes}
-        displayname={author.displayname}
-        text={comments[0].comment}
-        createdAt={createdAt}
+        post={post}
       />
       <CommentForm />
       {openModal && (
         <ModalPortal>
           <PostModal onClose={() => setOpenModal(false)}>
-            <PostDetail post={post}/>
+            <PostDetail post={post} />
           </PostModal>
         </ModalPortal>
       )}

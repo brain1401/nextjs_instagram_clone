@@ -47,3 +47,24 @@ export type ProfileUser = Omit<ResponseUser, "followings" | "followers"> & {
   }[];
   insta_posts: {id:number;}[]
 };
+
+export type ActionBarUser = {
+  bookmarks: {
+    author: { id: number; displayname: string };
+    id: number;
+  }[];
+  likePosts: {
+    author: { id: number; displayname: string };
+    id: number;
+  }[];
+  followings: {
+    id: number;
+    displayname: string;
+  }[];
+  followers: {
+    id: number;
+    displayname: string;
+  }[];
+  displayname: string;
+  id: number;
+};

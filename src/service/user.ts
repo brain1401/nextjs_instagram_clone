@@ -1,6 +1,7 @@
-import { ResponseUser, ProfileUser } from "@/model/user";
+import { ResponseUser, ProfileUser, ActionBarUser } from "@/model/user";
 import axios from "axios";
 import qs from "qs";
+import { getPostByDisplayname, getPostById } from "./posts";
 type OAuthUser = {
   id: string;
   email: string;
@@ -78,7 +79,43 @@ export async function getUserByEmail(email: string) {
       },
     }
   );
-  return response.data.data[0] as ResponseUser | null;
+  return response.data.data[0] as ResponseUser;
+}
+
+export async function getUserById(id: number) {
+  const query = qs.stringify({
+    filters: {
+      id: {
+        $eq: id,
+      },
+    },
+    populate: {
+      followings: {
+        fields: ["email", "realname", "userimage", "displayname"],
+      },
+      followers: {
+        fields: ["email", "realname", "userimage", "displayname"],
+      },
+      likePosts: {
+        fields: ["id"],
+        populate: {
+          author: {
+            fields: ["displayname"],
+          },
+        },
+      },
+    },
+  });
+
+  const response = await axios.get(
+    `https://brain1401.duckdns.org:1402/api/insta-users?${query}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+      },
+    }
+  );
+  return response.data.data[0] as ActionBarUser;
 }
 
 export async function getUsers() {
@@ -186,17 +223,19 @@ export async function setUserNamesByEmail(
     displayname: displayname,
     realname: realname,
   };
-  const response = user && await axios.put(
-    `https://brain1401.duckdns.org:1402/api/insta-users/${user.id}`,
-    {
-      data: data,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+  const response =
+    user &&
+    (await axios.put(
+      `https://brain1401.duckdns.org:1402/api/insta-users/${user.id}`,
+      {
+        data: data,
       },
-    }
-  );
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+        },
+      }
+    ));
 }
 
 export async function searchUsers(keyword?: string) {
@@ -284,9 +323,8 @@ export async function getUserForProfile(displayname: string) {
         fields: ["displayname"],
       },
       insta_posts: {
-        fields: ["id"]
-      }
-
+        fields: ["id"],
+      },
     },
   });
 
@@ -301,3 +339,49 @@ export async function getUserForProfile(displayname: string) {
 
   return response.data.data[0] as ProfileUser;
 }
+
+export async function getActionBarUserByEmail(email: string) {
+  const query = qs.stringify({
+    filters: {
+      email: {
+        $eq: email,
+      },
+    },
+    fields: ["displayname"],
+    populate: {
+      followings: {
+        fields: ["displayname"],
+      },
+      followers: {
+        fields: ["displayname"],
+      },
+      likePosts: {
+        fields: ["id"],
+        populate: {
+          author: {
+            fields: ["displayname"],
+          },
+        },
+      },
+      bookmarks: {
+        fields: ["id"],
+        populate: {
+          author: {
+            fields: ["displayname"],
+          },
+        },
+      },
+    },
+  });
+
+  const response = await axios.get(
+    `https://brain1401.duckdns.org:1402/api/insta-users?${query}`,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+      },
+    }
+  );
+  return response.data.data[0] as ActionBarUser;
+}
+

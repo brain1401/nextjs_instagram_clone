@@ -37,7 +37,7 @@ export default function Navbar() {
    data: user,
    isLoading: loading,
    error,
- } = useSWR<ResponseUser>("api/me");
+ } = useSWR<ResponseUser>("/api/me");
 
   return (
     <nav className="flex h-12 justify-between items-center">

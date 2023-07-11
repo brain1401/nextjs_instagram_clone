@@ -9,7 +9,7 @@ export default function Sidebar() {
     data: user,
     isLoading: loading,
     error,
-  } = useSWR<ResponseUser>("api/me");
+  } = useSWR<ResponseUser>("/api/me");
 
   if (loading) {
     return <BeatLoader className="text-center mt-8 " />;

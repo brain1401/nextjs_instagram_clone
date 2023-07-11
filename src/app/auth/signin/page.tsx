@@ -15,7 +15,7 @@ type Props = {
     callbackUrl: string;
   };
 };
-
+  
 export default async function signPage({
   searchParams: { callbackUrl },
 }: Props) {

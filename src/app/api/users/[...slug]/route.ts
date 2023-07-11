@@ -1,4 +1,4 @@
-import { getLikedPostOf, getPostOf, getSavedPostOf } from "@/service/posts";
+import { getLikedPostByDisplayname, getPostByDisplayname, getSavedPostByDisplayname } from "@/service/posts";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -16,12 +16,12 @@ export async function GET(_: NextRequest, context: Context) {
 
   const [displayname, query] = slug;
 
-  let request = getPostOf;
+  let request = getPostByDisplayname;
   if(query === 'saved'){
-    request = getSavedPostOf;
+    request = getSavedPostByDisplayname;
 
   }else if(query === 'liked'){
-    request = getLikedPostOf;
+    request = getLikedPostByDisplayname;
   }
   
   const result = await request(displayname);

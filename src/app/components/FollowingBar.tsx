@@ -4,14 +4,14 @@ import { BarLoader } from "react-spinners";
 import Link from "next/link";
 import ScrollableBar from "./ui/ScrollableBar";
 import { ResponseUser } from "@/model/user";
-import useSWR from 'swr';
+import useSWR from "swr";
 
 export default function FollowingBar() {
   const {
     data: user,
     isLoading: loading,
     error,
-  } = useSWR<ResponseUser>("api/me");
+  } = useSWR<ResponseUser>("/api/me");
   return (
     <section className="w-full flex justify-center items-center p-4 shadow-sm shadow-neutral-300 bm-4 rounded-lg min-h-[90px] overflow-x-auto relative z-0">
       {loading ? (
@@ -24,10 +24,7 @@ export default function FollowingBar() {
       {user?.followings && user.followings.length > 0 && (
         <ScrollableBar itemClassname="flex flex-col items-center w-20">
           {user.followings.map((user) => (
-            <Link
-              href={`user/${user.displayname}`}
-              key={user.realname}
-            >
+            <Link href={`user/${user.displayname}`} key={user.realname}>
               <Avatar image={user.userimage} highlight />
               <p className="w-full text-sm text-center text-ellipsis overflow-hidden">
                 {user.displayname}
