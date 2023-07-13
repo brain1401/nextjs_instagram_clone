@@ -7,8 +7,7 @@ import PlusIcon from "./ui/icons/PlusIcon";
 import ColorButton from "./ui/ColorButton";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Avatar from "./Avatar";
-import useSWR from 'swr';
-import { ResponseUser } from "@/model/user";
+import useMe from "@/hooks/me";
 
 const ICON_STYLE = "text-3xl hover:cursor-pointer";
 
@@ -34,10 +33,10 @@ export default function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
  const {
-   data: user,
+   user,
    isLoading: loading,
    error,
- } = useSWR<ResponseUser>("/api/me");
+ } = useMe();
 
   return (
     <nav className="flex h-12 justify-between items-center">

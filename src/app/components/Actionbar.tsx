@@ -3,32 +3,31 @@ import HeartIcon from "./ui/icons/HeartIcon";
 import BookmarkIcon from "./ui/icons/BookmarkIcon";
 import { parseDate } from "@/util/date";
 import { ResponsePost } from "@/model/post";
-import useSWR from "swr";
-import { ActionBarUser } from "@/model/user";
-import { useState, useRef, useEffect } from "react";
 import ToggleButton from "./ui/ToggleButton";
 import HeartFillIcon from "./ui/icons/HeartFillIcon";
 import BookmarkFillIcon from "./ui/icons/BookmarkFillIcon";
 import usePosts from "@/hooks/posts";
+import useMe from "@/hooks/me";
 type Props = {
   post: ResponsePost;
+  children?: React.ReactNode;
 };
 
-export default function Actionbar({ post }: Props) {
-  const { data: sessionUser } = useSWR<ActionBarUser>(
-    "/api/getActionBarUser"
-  );
-
-  const liked = Boolean(post.likes.find(item => item.id === sessionUser?.id));
-
-  const [bookmarked, setBookmarked] = useState(false);
+export default function Actionbar({ post, children }: Props) {
+  const { user, setBookmark } = useMe();
   const { setLike } = usePosts();
 
+  const liked = Boolean(post.likes.find((item) => item.id === user?.id));
+  const bookmarked = Boolean(
+    user?.bookmarks.find((item) => item.id === post.id)
+  );
+
   const handleLike = (like: boolean) => {
-    if (sessionUser) {
-      setLike(post, sessionUser, like);
- 
-    }
+    user && setLike(post, user, like);
+  };
+
+  const handleBookmark = (bookmark: boolean) => {
+    user && setBookmark(post.id, user, bookmark);
   };
 
   return (
@@ -47,18 +46,13 @@ export default function Actionbar({ post }: Props) {
         </div>
         <ToggleButton
           toggled={bookmarked}
-          onToggle={setBookmarked}
+          onToggle={() => handleBookmark(bookmarked)}
           onIcon={<BookmarkFillIcon />}
           offIcon={<BookmarkIcon />}
         />
       </div>
       <div className="m-3">
-        {post.comments[0].comment && (
-          <p className="mt-10 mb-8">
-            <span className="font-bold mr-1">{post.author.displayname}</span>
-            {post.comments[0].comment}
-          </p>
-        )}
+        {children}
         <p className="text-xs text-neutral-500 my-4">
           {parseDate(post.createdAt)}
         </p>

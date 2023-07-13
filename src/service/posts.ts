@@ -17,7 +17,10 @@ export async function getFollwingPostsByEmail(email: string) {
         fields: ["displayname", "userimage"],
       },
       likes: {
-        fields: ["displayname"],
+        fields: ["displayname", "id"],
+      },
+      bookmarkUsers: {
+        fields: ["displayname", "id"],
       },
       photo: {
         fields: ["url"],
@@ -265,7 +268,6 @@ export async function updateLikes(user: ActionBarUser, postId: number) {
   let result = null;
 
   if (isLiked) {
-    console.log("이미 라이크 하고 있는 사용자로 인식");
     result = await axios.put(
       `https://brain1401.duckdns.org:1402/api/insta-users/${user.id}`,
       {
@@ -282,7 +284,6 @@ export async function updateLikes(user: ActionBarUser, postId: number) {
       }
     );
   } else if (isLiked === false) {
-    console.log("라이크 하고 있지 않는 사용자로 인식");
     result = await axios.put(
       `https://brain1401.duckdns.org:1402/api/insta-users/${user.id}`,
       {
@@ -301,6 +302,79 @@ export async function updateLikes(user: ActionBarUser, postId: number) {
   } else {
     result = { data: "데이터가 없음" };
   }
+
+  return result.statusText;
+}
+
+export async function updateBookmarks(user: ActionBarUser, postId: number) {
+  const isBookmarked = Boolean(
+    user.bookmarks.find((item) => item.id === postId)
+  );
+  let result = null;
+
+  if (isBookmarked) {
+    result = await axios.put(
+      `https://brain1401.duckdns.org:1402/api/insta-users/${user.id}`,
+      {
+        data: {
+          bookmarks: {
+            disconnect: [postId],
+          },
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+        },
+      }
+    );
+  } else if (isBookmarked === false) {
+    result = await axios.put(
+      `https://brain1401.duckdns.org:1402/api/insta-users/${user.id}`,
+      {
+        data: {
+          bookmarks: {
+            connect: [postId],
+          },
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+        },
+      }
+    );
+  } else {
+    result = { data: "데이터가 없음" };
+  }
+
+  return result.statusText;
+}
+
+export async function addComment(
+  userId: number,
+  postId: number,
+  comment: string
+) {
+  
+
+  const result = await axios.post(
+    `https://brain1401.duckdns.org:1402/api/insta-post-comments/`,
+    {
+      comment: comment,
+      insta_post: {
+        connect: [postId]
+      },
+      author: {
+        connect: [userId]
+      }
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+      },
+    }
+  );
 
   return result.statusText;
 }

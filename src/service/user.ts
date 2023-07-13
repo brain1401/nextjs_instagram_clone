@@ -35,27 +35,12 @@ export async function addUserOrValidateSessionIdIfUserDeosNotExist({
     );
 
     return true;
-  } else if (!user.session_id) {
-    const data = {
-      session_id: id,
-    };
-
-    const response = await axios.put(
-      `https://brain1401.duckdns.org:1402/api/insta-users/${user.id}`,
-      {
-        data: data,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
-        },
-      }
-    );
-  }
+  } 
 }
 
 export async function getUserByEmail(email: string) {
   const query = qs.stringify({
+    fields: ["displayname", 'email', 'createdAt', 'id', 'publushedAt', 'realname', 'updatedAt', 'userimage'],
     filters: {
       email: {
         $eq: email,
@@ -63,10 +48,29 @@ export async function getUserByEmail(email: string) {
     },
     populate: {
       followings: {
-        fields: ["email", "realname", "userimage", "displayname"],
+        fields: ["realname", "userimage", "displayname"],
       },
       followers: {
-        fields: ["email", "realname", "userimage", "displayname"],
+        fields: ["realname", "userimage", "displayname"],
+      },
+      likePosts: {
+        fields: ["id"],
+        populate: {
+          author: {
+            fields: ["displayname", "id"],
+          },
+        },
+      },
+      bookmarks: {
+        fields: ["id"],
+        populate: {
+          author: {
+            fields: ["displayname", "id"],
+          },
+        },
+      },
+      insta_posts : {
+        fields: ["id"]
       },
     },
   });

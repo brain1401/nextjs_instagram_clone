@@ -1,10 +1,19 @@
 import { ResponsePost } from "@/model/post";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import axios from "axios";
-import { ActionBarUser } from "@/model/user";
+import { ActionBarUser, ResponseUser } from "@/model/user";
 
 async function updateLike(postId: number) {
-  return (await axios.put("/api/handleLikesButton", { postid: postId })).data
+  return (await axios.put("/api/handleLikesButton", { postid: postId })).data;
+}
+
+async function addComment(postId: number, comment: string) {
+  return (
+    await axios.post("/api/handleComment", {
+      postId: postId,
+      comment: comment,
+    })
+  ).data;
 }
 
 export default function usePosts() {
@@ -16,7 +25,6 @@ export default function usePosts() {
   } = useSWR<ResponsePost[]>("/api/posts");
 
   const setLike = (post: ResponsePost, user: ActionBarUser, like: boolean) => {
-
     const newPost: ResponsePost = {
       ...post,
       likes: like
@@ -33,5 +41,32 @@ export default function usePosts() {
       rollbackOnError: true,
     });
   };
-  return { posts, isLoading, error, setLike };
+
+  const postComment = (
+    post: ResponsePost,
+    user: ResponseUser,
+    comment: string
+  ) => {
+    const newPost: ResponsePost = {
+      ...post,
+      comments: [
+        ...post.comments,
+        {
+          author: { id: user.id, displayname: user.displayname, userimage: "" },
+          comment: comment,
+        },
+      ],
+    };
+
+    const newPosts = posts?.map((p) => (p.id === post.id ? newPost : p));
+
+    postMutate(addComment(post.id, comment), {
+      optimisticData: newPosts,
+      populateCache: false,
+      revalidate: false,
+      rollbackOnError: true,
+    });
+  };
+
+  return { posts, isLoading, error, setLike, postComment };
 }

@@ -12,10 +12,10 @@ type Props = {
 
 export default function PostDetail({ post }: Props) {
   const imageServerUrl = "https://brain1401.duckdns.org:1402";
-
+  const handlePostComment = (comment: string) => {};
 
   if (!post) {
-    return <BeatLoader size={30} className="mt-32 text-center"/>
+    return <BeatLoader size={30} className="mt-32 text-center" />;
   }
   return (
     <section className="flex w-full h-full">
@@ -57,10 +57,8 @@ export default function PostDetail({ post }: Props) {
               </li>
             ))}
         </ul>
-        <Actionbar
-          post={post}
-        />
-        <CommentForm />
+        <Actionbar post={post} />
+        <CommentForm onPostComment={handlePostComment}/>
       </div>
     </section>
   );

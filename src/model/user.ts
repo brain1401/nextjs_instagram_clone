@@ -16,12 +16,22 @@ export type ResponseUser = {
     userimage: string;
     realname: string;
   }[];
+  bookmarks: {
+    author: { id: number; displayname: string };
+    id: number;
+  }[];
+  likePosts: {
+    author: { id: number; displayname: string };
+    id: number;
+  }[];
+  insta_posts: {
+    id: number;
+  }[];
   id: number;
   publishedAt: string;
   updatedAt: string;
   userimage: string;
   realname: string;
-  session_id: string;
 };
 
 export type ResponseUsers = {

@@ -1,15 +1,14 @@
 "use client";
 import Avatar from "./Avatar";
-import useSWR from "swr";
-import { ResponseUser } from "@/model/user";
 import { BeatLoader } from "react-spinners";
+import useMe from "@/hooks/me";
 
 export default function Sidebar() {
   const {
-    data: user,
+    user,
     isLoading: loading,
     error,
-  } = useSWR<ResponseUser>("/api/me");
+  } = useMe();
 
   if (loading) {
     return <BeatLoader className="text-center mt-8 " />;

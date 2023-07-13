@@ -5,13 +5,14 @@ import Link from "next/link";
 import ScrollableBar from "./ui/ScrollableBar";
 import { ResponseUser } from "@/model/user";
 import useSWR from "swr";
+import useMe from "@/hooks/me";
 
 export default function FollowingBar() {
   const {
-    data: user,
+    user,
     isLoading: loading,
     error,
-  } = useSWR<ResponseUser>("/api/me");
+  } = useMe();
   return (
     <section className="w-full flex justify-center items-center p-4 shadow-sm shadow-neutral-300 bm-4 rounded-lg min-h-[90px] overflow-x-auto relative z-0">
       {loading ? (

@@ -17,13 +17,16 @@ export type ResponsePost = {
       userimage: string;
     };
     comment: string;
-    isPostFirstComment: boolean;
   }[];
   createdAt: string;
   id: number;
   likes: {
     displayname: string;
     id: number;
+  }[];
+  bookmarkUsers: {
+    id: number;
+    displayname: string;
   }[];
   photo: {
     id: number;

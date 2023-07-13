@@ -1,5 +1,5 @@
-'use client'
-import { ResponsePost, ResponsePosts } from "@/model/post";
+"use client";
+import { ResponsePost } from "@/model/post";
 import Image from "next/image";
 import CommentForm from "./CommentForm";
 import Actionbar from "./Actionbar";
@@ -8,7 +8,8 @@ import ModalPortal from "./ui/ModalPortal";
 import PostModal from "./PostModal";
 import PostDetail from "./PostDetail";
 import PostUserAvatar from "./PostUserAvatar";
-import { KeyedMutator } from "swr";
+import usePosts from "@/hooks/posts";
+import useMe from "@/hooks/me";
 
 type Props = {
   post: ResponsePost;
@@ -16,9 +17,13 @@ type Props = {
 };
 
 export default function PostListCard({ post, priority = false }: Props) {
-  const { author, comments, photo, createdAt, likes, id } = post;
+  const { author, photo, comments } = post;
   const [openModal, setOpenModal] = useState(false);
-
+  const { postComment } = usePosts();
+  const { user } = useMe();
+  const handlePostComment = (comment: string) => {
+    user && postComment(post, user, comment);
+  };
   return (
     <article className="rounded-lg shadow-md border border-gray-200">
       <PostUserAvatar
@@ -34,10 +39,21 @@ export default function PostListCard({ post, priority = false }: Props) {
         priority={priority}
         onClick={() => setOpenModal(true)}
       />
-      <Actionbar
-        post={post}
-      />
-      <CommentForm />
+      <Actionbar post={post}>
+        {post.comments[0].comment && (
+          <p className="mt-10 mb-8">
+            <span className="font-bold mr-1">{post.author.displayname}</span>
+            {post.comments[0].comment}
+          </p>
+        )}
+        {comments.length > 1 && (
+          <button
+            className="font-bold my-2 text-sky-500"
+            onClick={() => setOpenModal(true)}
+          >{`총 ${comments.length}개의 댓글 보기`}</button>
+        )}
+      </Actionbar>
+      <CommentForm onPostComment={handlePostComment} />
       {openModal && (
         <ModalPortal>
           <PostModal onClose={() => setOpenModal(false)}>
