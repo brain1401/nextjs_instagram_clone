@@ -21,6 +21,7 @@ const localFunc = (number: number, index: number): [string, string] => {
 
 register('ko', localFunc);
 
-export function parseDate(date: string) {
-  return format(date,"ko")
+export function parseDate(date?: string) {
+  
+  return date && format(date,"ko")
 }

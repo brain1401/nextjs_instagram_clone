@@ -18,7 +18,7 @@ export type ResponsePost = {
     };
     comment: string;
   }[];
-  createdAt: string;
+  createdAt?: string;
   id: number;
   likes: {
     displayname: string;
@@ -32,7 +32,7 @@ export type ResponsePost = {
     id: number;
     url: string;
   }[];
-  publishedAt: string;
-  updatedAt: string;
+  publishedAt?: string;
+  updatedAt?: string;
 };
 export type ResponsePosts = ResponsePost[];

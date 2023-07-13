@@ -1,7 +1,7 @@
 import { ResponsePost, ResponsePosts } from "@/model/post";
 import qs from "qs";
 import axios from "axios";
-import { ActionBarUser } from "@/model/user";
+import { ActionBarUser, ResponseUser } from "@/model/user";
 
 export async function getFollwingPostsByEmail(email: string) {
   const query = qs.stringify({
@@ -46,6 +46,11 @@ export async function getFollwingPostsByEmail(email: string) {
   );
   const data: ResponsePost[] = response.data.data;
 
+  data.forEach((item) => {
+    delete item.updatedAt;
+    delete item.publishedAt;
+  });
+
   return data;
 }
 
@@ -86,6 +91,10 @@ export async function getPost(id: string) {
     }
   );
   const data: ResponsePosts = response.data.data;
+  data.forEach((item) => {
+    delete item.updatedAt;
+    delete item.publishedAt;
+  });
 
   return data;
 }
@@ -129,7 +138,11 @@ export async function getPostByDisplayname(displayname: string) {
       },
     }
   );
-  const data = response.data.data;
+  const data: ResponsePost[] = response.data.data;
+  data.forEach((item) => {
+    delete item.updatedAt;
+    delete item.publishedAt;
+  });
   return data;
 }
 
@@ -172,8 +185,11 @@ export async function getSavedPostByDisplayname(displayname: string) {
       },
     }
   );
-  const data = response.data.data;
-
+  const data: ResponsePost[] = response.data.data;
+  data.forEach((item) => {
+    delete item.updatedAt;
+    delete item.publishedAt;
+  });
   return data;
 }
 
@@ -216,7 +232,11 @@ export async function getLikedPostByDisplayname(displayname: string) {
       },
     }
   );
-  const data = response.data.data;
+  const data:ResponsePost[] = response.data.data;
+  data.forEach((item) => {
+    delete item.updatedAt;
+    delete item.publishedAt;
+  });
   return data;
 }
 
@@ -263,7 +283,7 @@ export async function getPostById(id: number) {
   return data as ResponsePost;
 }
 
-export async function updateLikes(user: ActionBarUser, postId: number) {
+export async function updateLikes(user: ResponseUser, postId: number) {
   const isLiked = Boolean(user.likePosts.find((item) => item.id === postId));
   let result = null;
 
@@ -356,18 +376,16 @@ export async function addComment(
   postId: number,
   comment: string
 ) {
-  
-
   const result = await axios.post(
     `https://brain1401.duckdns.org:1402/api/insta-post-comments/`,
     {
       comment: comment,
       insta_post: {
-        connect: [postId]
+        connect: [postId],
       },
       author: {
-        connect: [userId]
-      }
+        connect: [userId],
+      },
     },
     {
       headers: {

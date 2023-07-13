@@ -23,12 +23,7 @@ export async function POST(req: NextRequest) {
   if (!postId || comment === undefined) {
     return NextResponse.json({ error: "Bad Request" }, { status: 400 });
   }
-  if (Boolean(user.insta_posts.find((item) => item.id === postId)) === false) {
-    return NextResponse.json(
-      { error: "유효하지 않은 사용자" },
-      { status: 400 }
-    );
-  }
+  
 
   return NextResponse.json(await addComment(user.id, postId, comment));
 }
