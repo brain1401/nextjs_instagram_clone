@@ -5,7 +5,7 @@ import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function GET(_:NextRequest) {
   const session = await getServerSession(authOptions);
-  if(!session?.user?.email){
+  if(!session || !session?.user?.email){
     throw new Error('세션 정보가 없숩니다!');
   }
   const email = session.user.email;
