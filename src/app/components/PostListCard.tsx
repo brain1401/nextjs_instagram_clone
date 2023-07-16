@@ -24,6 +24,7 @@ export default function PostListCard({ post, priority = false }: Props) {
   const handlePostComment = (comment: string) => {
     user && postComment(post, user, comment);
   };
+
   return (
     <article className="rounded-lg shadow-md border border-gray-200">
       <PostUserAvatar
@@ -57,7 +58,7 @@ export default function PostListCard({ post, priority = false }: Props) {
       {openModal && (
         <ModalPortal>
           <PostModal onClose={() => setOpenModal(false)}>
-            <PostDetail post={post} />
+            <PostDetail post={post} handlePostComment={handlePostComment}/>
           </PostModal>
         </ModalPortal>
       )}
