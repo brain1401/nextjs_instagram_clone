@@ -52,7 +52,7 @@ export default function usePosts() {
       comments: [
         ...post.comments,
         {
-          author: { id: user.id, displayname: user.displayname, userimage: "" },
+          author: { id: user.id, displayname: user.displayname, userimage: user.userimage },
           comment: comment,
         },
       ],
