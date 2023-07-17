@@ -2,33 +2,34 @@ import { ProfileUser, ResponseUser } from "@/model/user";
 import FollowButton from "./FollowButton";
 import Avatar from "./Avatar";
 import { getServerSession } from "next-auth";
-import { getUserByEmail } from "@/service/user";
 import { authOptions } from "../api/auth/[...nextauth]/route";
+import { getUserByEmail } from "@/service/user";
 
 type Props = {
   user: ProfileUser;
-};
-const renderButton = (
-  sessionUser: "" | ResponseUser | null | undefined,
-  user: ProfileUser
-) => {
-  if (sessionUser) {
-    if (sessionUser.displayname !== user?.displayname) {
-      return sessionUser.followings.find(
-        (following) => following.displayname === user.displayname
-      ) ? (
-        <FollowButton type="unfollow" />
-      ) : (
-        <FollowButton type="follow" />
-      );
-    }
-  }
 };
 
 export default async function UserProfile({ user }: Props) {
   const session = await getServerSession(authOptions);
   const sessionUser =
     session?.user?.email && (await getUserByEmail(session.user.email));
+
+  const renderButton = (
+    sessionUser: "" | ResponseUser | null | undefined,
+    user: ProfileUser
+  ) => {
+    if (sessionUser) {
+      if (sessionUser.displayname !== user?.displayname) {
+        return sessionUser.followings.find(
+          (following) => following.displayname === user.displayname
+        ) ? (
+          <FollowButton type="unfollow" userId={user.id} />
+        ) : (
+          <FollowButton type="follow" userId={user.id} />
+        );
+      }
+    }
+  };
 
   return (
     <>
@@ -38,7 +39,7 @@ export default async function UserProfile({ user }: Props) {
           <div className="ml-8 w-[13rem] text-base">
             <div className="flex gap-5">
               <h1 className="text-xl">{user?.displayname}</h1>
-              <p>{renderButton(sessionUser, user)}</p>
+              {renderButton(sessionUser, user)}
             </div>
             <div className="flex justify-between my-2">
               <p>

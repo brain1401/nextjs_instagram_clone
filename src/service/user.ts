@@ -1,7 +1,6 @@
 import { ResponseUser, ProfileUser, ActionBarUser } from "@/model/user";
 import axios from "axios";
 import qs from "qs";
-import { getPostByDisplayname, getPostById } from "./posts";
 type OAuthUser = {
   id: string;
   email: string;
@@ -35,12 +34,21 @@ export async function addUserOrValidateSessionIdIfUserDeosNotExist({
     );
 
     return true;
-  } 
+  }
 }
 
 export async function getUserByEmail(email: string) {
   const query = qs.stringify({
-    fields: ["displayname", 'email', 'createdAt', 'id', 'publushedAt', 'realname', 'updatedAt', 'userimage'],
+    fields: [
+      "displayname",
+      "email",
+      "createdAt",
+      "id",
+      "publushedAt",
+      "realname",
+      "updatedAt",
+      "userimage",
+    ],
     filters: {
       email: {
         $eq: email,
@@ -69,8 +77,8 @@ export async function getUserByEmail(email: string) {
           },
         },
       },
-      insta_posts : {
-        fields: ["id"]
+      insta_posts: {
+        fields: ["id"],
       },
     },
   });
@@ -389,3 +397,48 @@ export async function getActionBarUserByEmail(email: string) {
   return response.data.data[0] as ActionBarUser;
 }
 
+export async function handleUnfollow(userId: number, sessionUserId: number) {
+
+  const data = {
+    followings: {
+      disconnect: [userId]
+    }
+  }
+
+  const response = await axios.put(
+    `https://brain1401.duckdns.org:1402/api/insta-users/${sessionUserId}`,
+    {
+      data: data,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export async function handleFollow(userId: number, sessionUserId: number) {
+
+  const data = {
+    followings: {
+      connect: [userId],
+    },
+  };
+
+  const response = await axios.put(
+    `https://brain1401.duckdns.org:1402/api/insta-users/${sessionUserId}`,
+    {
+      data: data,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+      },
+    }
+  );
+
+  return response.data;
+}
