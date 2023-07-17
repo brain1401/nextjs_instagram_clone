@@ -1,7 +1,6 @@
 "use client";
 import { ResponsePost } from "@/model/post";
 import Image from "next/image";
-import CommentForm from "./CommentForm";
 import Actionbar from "./Actionbar";
 import { useState } from "react";
 import ModalPortal from "./ui/ModalPortal";
@@ -40,7 +39,7 @@ export default function PostListCard({ post, priority = false }: Props) {
         priority={priority}
         onClick={() => setOpenModal(true)}
       />
-      <Actionbar post={post}>
+      <Actionbar post={post} onComment={handlePostComment}>
         {post.comments[0].comment && (
           <p className="mt-10 mb-8">
             <span className="font-bold mr-1">{post.author.displayname}</span>
@@ -54,11 +53,10 @@ export default function PostListCard({ post, priority = false }: Props) {
           >{`총 ${comments.length}개의 댓글 보기`}</button>
         )}
       </Actionbar>
-      <CommentForm onPostComment={handlePostComment} />
       {openModal && (
         <ModalPortal>
           <PostModal onClose={() => setOpenModal(false)}>
-            <PostDetail post={post} handlePostComment={handlePostComment}/>
+            <PostDetail post={post} handlePostComment={handlePostComment} />
           </PostModal>
         </ModalPortal>
       )}

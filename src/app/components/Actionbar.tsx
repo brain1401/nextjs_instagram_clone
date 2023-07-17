@@ -8,12 +8,14 @@ import HeartFillIcon from "./ui/icons/HeartFillIcon";
 import BookmarkFillIcon from "./ui/icons/BookmarkFillIcon";
 import usePosts from "@/hooks/posts";
 import useMe from "@/hooks/me";
+import CommentForm from "./CommentForm";
 type Props = {
   post: ResponsePost;
   children?: React.ReactNode;
+  onComment: (comment: string) => void;
 };
 
-export default function Actionbar({ post, children }: Props) {
+export default function Actionbar({ post, children, onComment }: Props) {
   const { user, setBookmark } = useMe();
   const { setLike } = usePosts();
 
@@ -28,6 +30,10 @@ export default function Actionbar({ post, children }: Props) {
 
   const handleBookmark = (bookmark: boolean) => {
     user && setBookmark(post.id, user, bookmark);
+  };
+
+  const handleComment = (comment: string) => {
+    user && onComment(comment);
   };
 
   return (
@@ -57,6 +63,7 @@ export default function Actionbar({ post, children }: Props) {
           {parseDate(post.createdAt)}
         </p>
       </div>
+      <CommentForm onPostComment={handleComment} />
     </>
   );
 }

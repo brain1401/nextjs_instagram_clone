@@ -2,7 +2,6 @@ import { ResponsePost } from "@/model/post";
 import Image from "next/image";
 import PostUserAvatar from "./PostUserAvatar";
 import Actionbar from "./Actionbar";
-import CommentForm from "./CommentForm";
 import Avatar from "./Avatar";
 import { BeatLoader } from "react-spinners";
 import useMe from "@/hooks/me";
@@ -14,9 +13,7 @@ type Props = {
 
 export default function PostDetail({ post, handlePostComment }: Props) {
   const imageServerUrl = "https://brain1401.duckdns.org:1402";
-  const {user} = useMe();
-
- 
+  const { user } = useMe();
 
   if (!post) {
     return <BeatLoader size={30} className="mt-32 text-center" />;
@@ -61,8 +58,7 @@ export default function PostDetail({ post, handlePostComment }: Props) {
               </li>
             ))}
         </ul>
-        <Actionbar post={post} />
-        <CommentForm onPostComment={handlePostComment}/>
+        <Actionbar post={post} onComment={handlePostComment} />
       </div>
     </section>
   );

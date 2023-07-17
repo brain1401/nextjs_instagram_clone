@@ -1,5 +1,6 @@
 import useSWR from "swr";
 import axios from "axios";
+import {useCallback} from 'react';
 import { ResponseUser } from "@/model/user";
 
 async function updateBookmarks(postId: number) {
@@ -15,7 +16,7 @@ export default function useMe() {
     mutate,
   } = useSWR<ResponseUser>("/api/me");
 
-  const setBookmark = (
+  const setBookmark = useCallback((
     postId: number,
     _user: ResponseUser,
     bookmark: boolean
@@ -41,6 +42,7 @@ export default function useMe() {
       revalidate: false,
       rollbackOnError: true,
     });
-  };
+  },[mutate])
+  
   return { user, isLoading, error, setBookmark };
 }

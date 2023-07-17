@@ -1,6 +1,7 @@
 import { ResponsePost } from "@/model/post";
 import useSWR from "swr";
 import axios from "axios";
+import {useCallback} from 'react';
 import { ActionBarUser, ResponseUser } from "@/model/user";
 
 async function updateLike(postId: number) {
@@ -24,7 +25,7 @@ export default function usePosts() {
     mutate: postMutate,
   } = useSWR<ResponsePost[]>("/api/posts");
 
-  const setLike = (post: ResponsePost, user: ActionBarUser, like: boolean) => {
+  const setLike = useCallback((post: ResponsePost, user: ActionBarUser, like: boolean) => {
     const newPost: ResponsePost = {
       ...post,
       likes: like
@@ -40,9 +41,9 @@ export default function usePosts() {
       revalidate: false,
       rollbackOnError: true,
     });
-  };
+  },[posts, postMutate])
 
-  const postComment = (
+  const postComment = useCallback((
     post: ResponsePost,
     user: ResponseUser,
     comment: string
@@ -66,7 +67,7 @@ export default function usePosts() {
       revalidate: false,
       rollbackOnError: true,
     });
-  };
+  }, [posts, postMutate])
 
   return { posts, isLoading, error, setLike, postComment };
 }
