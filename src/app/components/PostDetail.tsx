@@ -4,16 +4,15 @@ import PostUserAvatar from "./PostUserAvatar";
 import Actionbar from "./Actionbar";
 import Avatar from "./Avatar";
 import { BeatLoader } from "react-spinners";
-import useMe from "@/hooks/me";
 
 type Props = {
   post: ResponsePost;
   handlePostComment: (comment: string) => void;
+  handleLike?: (like: boolean) => void;
 };
 
-export default function PostDetail({ post, handlePostComment }: Props) {
+export default function PostDetail({ post, handlePostComment, handleLike }: Props) {
   const imageServerUrl = "https://brain1401.duckdns.org:1402";
-  const { user } = useMe();
 
   if (!post) {
     return <BeatLoader size={30} className="mt-32 text-center" />;
@@ -58,7 +57,7 @@ export default function PostDetail({ post, handlePostComment }: Props) {
               </li>
             ))}
         </ul>
-        <Actionbar post={post} onComment={handlePostComment} />
+        <Actionbar post={post} onComment={handlePostComment} handleLikeProps={handleLike}/>
       </div>
     </section>
   );

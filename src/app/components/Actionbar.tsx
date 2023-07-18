@@ -13,9 +13,15 @@ type Props = {
   post: ResponsePost;
   children?: React.ReactNode;
   onComment: (comment: string) => void;
+  handleLikeProps?: (like: boolean) => void;
 };
 
-export default function Actionbar({ post, children, onComment }: Props) {
+export default function Actionbar({
+  post,
+  children,
+  onComment,
+  handleLikeProps,
+}: Props) {
   const { user, setBookmark } = useMe();
   const { setLike } = usePosts();
 
@@ -42,7 +48,9 @@ export default function Actionbar({ post, children, onComment }: Props) {
         <div className="flex gap-[0.3rem]">
           <ToggleButton
             toggled={liked}
-            onToggle={() => handleLike(liked)}
+            onToggle={() =>
+              handleLikeProps ? handleLikeProps(liked) : handleLike(liked)
+            }
             onIcon={<HeartFillIcon />}
             offIcon={<HeartIcon />}
           />
