@@ -4,14 +4,16 @@ import PostUserAvatar from "./PostUserAvatar";
 import Actionbar from "./Actionbar";
 import Avatar from "./Avatar";
 import { BeatLoader } from "react-spinners";
+import { ResponseUser } from "@/model/user";
 
 type Props = {
   post: ResponsePost;
   handlePostComment: (comment: string) => void;
   handleLike?: (like: boolean) => void;
-};
+  handleBookmark?: (bookmark: boolean) => void;
+}
 
-export default function PostDetail({ post, handlePostComment, handleLike }: Props) {
+export default function PostDetail({ post, handlePostComment, handleLike, handleBookmark }: Props) {
   const imageServerUrl = "https://brain1401.duckdns.org:1402";
 
   if (!post) {
@@ -57,7 +59,7 @@ export default function PostDetail({ post, handlePostComment, handleLike }: Prop
               </li>
             ))}
         </ul>
-        <Actionbar post={post} onComment={handlePostComment} handleLikeProps={handleLike}/>
+        <Actionbar post={post} onComment={handlePostComment} handleLikeProps={handleLike} handleBookmarkProps={handleBookmark}/>
       </div>
     </section>
   );

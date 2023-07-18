@@ -115,6 +115,9 @@ export async function getPostByDisplayname(displayname: string) {
       likes: {
         fields: ["displayname"],
       },
+      bookmarkUsers: {
+        fields: ["id","displayname"],
+      },
       photo: {
         fields: ["url"],
       },
@@ -162,6 +165,9 @@ export async function getSavedPostByDisplayname(displayname: string) {
       likes: {
         fields: ["displayname"],
       },
+      bookmarkUsers: {
+        fields: ["id", "displayname"],
+      },
       photo: {
         fields: ["url"],
       },
@@ -208,6 +214,9 @@ export async function getLikedPostByDisplayname(displayname: string) {
       },
       likes: {
         fields: ["displayname"],
+      },
+      bookmarkUsers: {
+        fields: ["id", "displayname"],
       },
       photo: {
         fields: ["url"],

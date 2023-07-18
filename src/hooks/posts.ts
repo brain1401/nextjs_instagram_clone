@@ -17,6 +17,11 @@ async function addComment(postId: number, comment: string) {
   ).data;
 }
 
+async function updateBookmarks(postId: number) {
+  return (await axios.put("/api/handleBookmarksButton", { postid: postId }))
+    .data;
+}
+
 export default function usePosts() {
   const {
     data: posts,
@@ -67,7 +72,35 @@ export default function usePosts() {
       revalidate: false,
       rollbackOnError: true,
     });
-  }, [posts, postMutate])
+  }, [posts, postMutate]);
 
-  return { posts, isLoading, error, setLike, postComment };
+  const setBookmark = useCallback(
+    (post: ResponsePost, user: ResponseUser, bookmark: boolean) => {
+      if (!user) return;
+      const bookmarks = post.bookmarkUsers ?? [];
+      const newPost = {
+        ...post,
+        bookmarkUsers: bookmark
+          ? bookmarks.filter((item) => item.id !== user.id)
+          : [
+              ...bookmarks,
+              {
+                displayname: user.displayname,
+                id: post.id,
+              },
+            ],
+      };
+      const newPosts = posts?.map((p) => (p.id === post.id ? newPost : p));
+
+      postMutate(updateBookmarks(post.id), {
+        optimisticData: newPosts,
+        populateCache: false,
+        revalidate: true,
+        rollbackOnError: true,
+      });
+    },
+    [postMutate, posts]
+  );
+
+  return { posts, isLoading, error, setLike, setBookmark, postComment };
 }

@@ -14,6 +14,7 @@ type Props = {
   children?: React.ReactNode;
   onComment: (comment: string) => void;
   handleLikeProps?: (like: boolean) => void;
+  handleBookmarkProps?: (bookmark: boolean) => void;
 };
 
 export default function Actionbar({
@@ -21,13 +22,15 @@ export default function Actionbar({
   children,
   onComment,
   handleLikeProps,
+  handleBookmarkProps,
+  
 }: Props) {
-  const { user, setBookmark } = useMe();
-  const { setLike } = usePosts();
+  const { user } = useMe();
+  const { setLike, setBookmark } = usePosts();
 
   const liked = Boolean(post.likes.find((item) => item.id === user?.id));
   const bookmarked = Boolean(
-    user?.bookmarks.find((item) => item.id === post.id)
+    post.bookmarkUsers?.find(item => item.id === user?.id)
   );
 
   const handleLike = (like: boolean) => {
@@ -35,12 +38,13 @@ export default function Actionbar({
   };
 
   const handleBookmark = (bookmark: boolean) => {
-    user && setBookmark(post.id, user, bookmark);
+    user && setBookmark(post, user, bookmark);
   };
 
   const handleComment = (comment: string) => {
     user && onComment(comment);
   };
+
 
   return (
     <>
@@ -60,7 +64,7 @@ export default function Actionbar({
         </div>
         <ToggleButton
           toggled={bookmarked}
-          onToggle={() => handleBookmark(bookmarked)}
+          onToggle={() => handleBookmarkProps ? handleBookmarkProps(liked) :handleBookmark(bookmarked)}
           onIcon={<BookmarkFillIcon />}
           offIcon={<BookmarkIcon />}
         />

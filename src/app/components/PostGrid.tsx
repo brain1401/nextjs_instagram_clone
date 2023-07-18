@@ -18,14 +18,19 @@ export type FunctionalMutateType = {
     comment: string
   ) => void;
   setLike: (post: ResponsePost, user: ActionBarUser, like: boolean) => void;
+  setBookmark: (
+    post: ResponsePost,
+    user: ResponseUser,
+    bookmark: boolean
+  ) => void;
 };
 
 export default function PostGrid({ displayname, query }: Props) {
-  const { posts, isLoading, error, postComment, setLike } = useTabPosts(
+  const { posts, isLoading, error, postComment, setLike, setBookmark } = useTabPosts(
     displayname,
     query
   );
-  const mutates: FunctionalMutateType = { postComment, setLike };
+  const mutates: FunctionalMutateType = { postComment, setLike, setBookmark };
 
   if (error || isLoading) {
     return <GridSpinner/>

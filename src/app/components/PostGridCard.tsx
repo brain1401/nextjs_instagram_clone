@@ -24,7 +24,7 @@ export default function PostGridCard({
   const [openModal, setOpenModal] = useState(false);
   const { photo, author } = post;
   const imageServerUrl = "https://brain1401.duckdns.org:1402/";
-  const { postComment, setLike } = mutates;
+  const { postComment, setLike, setBookmark } = mutates;
 
   const handleOpenPost = () => {
     if (!user) {
@@ -37,10 +37,13 @@ export default function PostGridCard({
     user && postComment(post, user, comment);
   };
 
-    const handleLike = (like: boolean) => {
-      user && setLike(post, user, like);
-    };
+  const handleLike = (like: boolean) => {
+    user && setLike(post, user, like);
+  };
 
+  const handleBookmark = (bookmark: boolean) => {
+    user && setBookmark(post, user, bookmark);
+  };
 
   return (
     <div className="relative w-full aspect-square">
@@ -56,7 +59,12 @@ export default function PostGridCard({
       {openModal && (
         <ModalPortal>
           <PostModal onClose={() => setOpenModal(false)}>
-            <PostDetail post={post} handlePostComment={handlePostComment} handleLike={handleLike} />
+            <PostDetail
+              post={post}
+              handlePostComment={handlePostComment}
+              handleLike={handleLike}
+              handleBookmark={handleBookmark}
+            />
           </PostModal>
         </ModalPortal>
       )}
