@@ -64,7 +64,7 @@ export default function Actionbar({
         </div>
         <ToggleButton
           toggled={bookmarked}
-          onToggle={() => handleBookmarkProps ? handleBookmarkProps(liked) :handleBookmark(bookmarked)}
+          onToggle={() => handleBookmarkProps ? handleBookmarkProps(bookmarked) :handleBookmark(bookmarked)}
           onIcon={<BookmarkFillIcon />}
           offIcon={<BookmarkIcon />}
         />

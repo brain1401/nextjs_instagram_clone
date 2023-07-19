@@ -4,7 +4,6 @@ import PostUserAvatar from "./PostUserAvatar";
 import Actionbar from "./Actionbar";
 import Avatar from "./Avatar";
 import { BeatLoader } from "react-spinners";
-import { ResponseUser } from "@/model/user";
 
 type Props = {
   post: ResponsePost;
@@ -19,6 +18,7 @@ export default function PostDetail({ post, handlePostComment, handleLike, handle
   if (!post) {
     return <BeatLoader size={30} className="mt-32 text-center" />;
   }
+  console.log(post);
   return (
     <section className="flex w-full h-full">
       <div className="relative basis-3/5">
@@ -40,7 +40,7 @@ export default function PostDetail({ post, handlePostComment, handleLike, handle
           {post.comments &&
             post.comments.map(({ author: commentAuthor, comment }, index) => (
               <li
-                key={commentAuthor.displayname}
+                key={index}
                 className="flex items-center mb-1"
               >
                 <Avatar

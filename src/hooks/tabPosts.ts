@@ -31,7 +31,14 @@ export default function useTabPosts(displayname: string, query: string) {
   } = useSWR<ResponsePost[]>(`/api/users/${displayname}/${query}`);
 
   const setLike = useCallback(
-    (post: ResponsePost, user: ActionBarUser, like: boolean) => {
+    (
+      post: ResponsePost,
+      setPost: React.Dispatch<
+        React.SetStateAction<ResponsePost | null | undefined>
+      >,
+      user: ActionBarUser,
+      like: boolean
+    ) => {
       const newPost: ResponsePost = {
         ...post,
         likes: like
@@ -47,12 +54,21 @@ export default function useTabPosts(displayname: string, query: string) {
         revalidate: true,
         rollbackOnError: true,
       });
+
+      setPost(newPost);
     },
     [posts, postMutate]
   );
 
   const postComment = useCallback(
-    (post: ResponsePost, user: ResponseUser, comment: string) => {
+    (
+      post: ResponsePost,
+      setPost: React.Dispatch<
+        React.SetStateAction<ResponsePost | null | undefined>
+      >,
+      user: ResponseUser,
+      comment: string
+    ) => {
       const newPost: ResponsePost = {
         ...post,
         comments: [
@@ -76,19 +92,28 @@ export default function useTabPosts(displayname: string, query: string) {
         revalidate: true,
         rollbackOnError: true,
       });
+      setPost(newPost);
     },
+
     [posts, postMutate]
   );
 
   const setBookmark = useCallback(
-    (post: ResponsePost, user: ResponseUser, bookmark: boolean) => {
+    (
+      post: ResponsePost,
+      setPost: React.Dispatch<
+        React.SetStateAction<ResponsePost | null | undefined>
+      >,
+      user: ResponseUser,
+      bookmark: boolean
+    ) => {
       if (!user) return;
       const bookmarks = post.bookmarkUsers ?? [];
-      const newPost = {
+      const newPost:ResponsePost = {
         ...post,
         bookmarkUsers: bookmark
           ? bookmarks.filter((item) => item.id !== user.id)
-          : [
+          :  [
               ...bookmarks,
               {
                 displayname: user.displayname,
@@ -104,6 +129,7 @@ export default function useTabPosts(displayname: string, query: string) {
         revalidate: true,
         rollbackOnError: true,
       });
+      setPost(newPost);
     },
     [postMutate, posts]
   );
