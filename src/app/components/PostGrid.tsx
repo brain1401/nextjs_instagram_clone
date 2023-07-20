@@ -21,11 +21,17 @@ export default function PostGrid({ displayname, query }: Props) {
   const { posts, isLoading, error, postComment, setLike, setBookmark } =
     useTabPosts(displayname, query);
 
-  if (error || isLoading || !posts) {
-    return <GridSpinner />;
+  if (error || isLoading) {
+    return (
+      <div className="text-center mt-10">
+        <GridSpinner />
+      </div>
+    );
   }
   const handlePostComment = (comment: string) => {
-    user && selectedPost && postComment(selectedPost, setSelectedPost, user, comment);
+    user &&
+      selectedPost &&
+      postComment(selectedPost, setSelectedPost, user, comment);
   };
 
   const handleLike = (like: boolean) => {
