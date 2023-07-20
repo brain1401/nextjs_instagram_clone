@@ -1,5 +1,5 @@
 import {
-  addUserOrValidateSessionIdIfUserDeosNotExist,
+  addUserIfUserDeosNotExist,
   getUserByEmail,
 } from "@/service/user";
 import NextAuth, { NextAuthOptions } from "next-auth";
@@ -20,7 +20,7 @@ export const authOptions: NextAuthOptions = {
         return false;
       }
 
-      addUserOrValidateSessionIdIfUserDeosNotExist({
+      addUserIfUserDeosNotExist({
         id,
         image,
         email,

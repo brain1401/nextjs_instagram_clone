@@ -7,7 +7,7 @@ type OAuthUser = {
   image?: string | null;
 };
 
-export async function addUserOrValidateSessionIdIfUserDeosNotExist({
+export async function addUserIfUserDeosNotExist({
   id,
   email,
   image,
@@ -46,7 +46,6 @@ export async function getUserByEmail(email: string) {
       "id",
       "publushedAt",
       "realname",
-      "updatedAt",
       "userimage",
     ],
     filters: {
