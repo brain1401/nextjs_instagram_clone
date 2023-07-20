@@ -365,3 +365,48 @@ export async function addComment(
 
   return result.statusText;
 }
+
+export async function createPost(userId: number, text: string, file: Blob) {
+
+ 
+  const creationResponse = await axios.post(
+    "https://brain1401.duckdns.org:1402/api/insta-posts",
+    {
+      author: {
+        connect: [userId]
+      },
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+      },
+    }
+  );
+
+  const newPostId = creationResponse.data.data.id;
+
+  const newFormData = new FormData();
+  newFormData.append("files", file);
+  newFormData.append("ref", "api::insta-post.insta-post");
+  newFormData.append("refId", newPostId);
+  newFormData.append("field", "photo");
+
+  const photoResponse = await axios.post(
+    "https://brain1401.duckdns.org:1402/api/upload",
+    newFormData,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+  const photoId = await photoResponse.data[0].id;
+
+
+  await addComment(userId, newPostId, text);
+
+  
+
+  return photoResponse.statusText;
+}
