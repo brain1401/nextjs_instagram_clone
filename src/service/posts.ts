@@ -3,7 +3,7 @@ import qs from "qs";
 import axios from "axios";
 import { ActionBarUser, ResponseUser } from "@/model/user";
 
-export async function getFollwingPostsByEmail(email: string) {
+export async function getPostsByEmail(email: string) {
   const query = qs.stringify({
     filters: {
       author: {
@@ -54,7 +54,7 @@ export async function getFollwingPostsByEmail(email: string) {
   return data;
 }
 
-export async function getPost(id: string) {
+export async function getPostById(id: string) {
   const query = qs.stringify({
     filters: {
       id: {
@@ -116,7 +116,7 @@ export async function getPostByDisplayname(displayname: string) {
         fields: ["displayname"],
       },
       bookmarkUsers: {
-        fields: ["id","displayname"],
+        fields: ["id", "displayname"],
       },
       photo: {
         fields: ["url"],
@@ -145,6 +145,7 @@ export async function getPostByDisplayname(displayname: string) {
   data.forEach((item) => {
     delete item.updatedAt;
     delete item.publishedAt;
+    delete item.createdAt;
   });
   return data;
 }
@@ -195,6 +196,7 @@ export async function getSavedPostByDisplayname(displayname: string) {
   data.forEach((item) => {
     delete item.updatedAt;
     delete item.publishedAt;
+    delete item.createdAt;
   });
   return data;
 }
@@ -241,55 +243,13 @@ export async function getLikedPostByDisplayname(displayname: string) {
       },
     }
   );
-  const data:ResponsePost[] = response.data.data;
+  const data: ResponsePost[] = response.data.data;
   data.forEach((item) => {
     delete item.updatedAt;
     delete item.publishedAt;
+    delete item.createdAt;
   });
   return data;
-}
-
-export async function getPostById(id: number) {
-  const query = qs.stringify({
-    filters: {
-      author: {
-        id: {
-          $eq: id,
-        },
-      },
-    },
-    populate: {
-      author: {
-        fields: ["displayname", "userimage"],
-      },
-      likes: {
-        fields: ["displayname"],
-      },
-      photo: {
-        fields: ["url"],
-      },
-      comments: {
-        fields: ["comment", "isPostFirstComment"],
-        populate: {
-          author: {
-            fields: ["displayname", "userimage"],
-          },
-        },
-      },
-    },
-    sort: ["createdAt"],
-  });
-
-  const response = await axios.get(
-    `https://brain1401.duckdns.org:1402/api/insta-posts?${query}`,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
-      },
-    }
-  );
-  const data = response.data.data;
-  return data as ResponsePost;
 }
 
 export async function updateLikes(user: ResponseUser, postId: number) {
