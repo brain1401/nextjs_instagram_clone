@@ -50,7 +50,7 @@ export default function NewPost({ user }: Props) {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file) return;
 
@@ -59,22 +59,28 @@ export default function NewPost({ user }: Props) {
     formData.append("file", file);
     formData.append("text", textRef.current?.value ?? "");
 
-    axios
-      .post("/api/posts/", formData, {
+    try {
+      const res = await axios.post("/api/posts", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      })
-      .then((res) => {
-        if (res.statusText !== "OK") {
-          setError(`${res.status} ${res.statusText}`);
-          return;
-        }
-        router.push("/");
-      })
-      .catch((err) => setError(err.toString()))
-      .finally(() => setLoading(false));
+      });
+      console.log(res.data);
+      if (res.data === false) {
+        setError(`${res.status} ${res.statusText}`);
+        return;
+      }
+      router.push("/");
+    } catch (err) {
+      console.log(err);
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data ?? err.toString());
+      }
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <section className="w-full max-w-xl flex flex-col items-center mt-6">
       {loading && (

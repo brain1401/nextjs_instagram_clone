@@ -3,18 +3,17 @@ import { FormEvent, useState } from "react";
 import SmileIcon from "./ui/icons/SmileIcon";
 
 type Props = {
-  onPostComment: (comment:string) => void;
-}
-export default function CommentForm({onPostComment}: Props) {
-
+  onPostComment: (comment: string) => void;
+};
+export default function CommentForm({ onPostComment }: Props) {
   const [comment, setComment] = useState("");
-  const buttonDisabled = comment.length === 0
+  const buttonDisabled = comment.length === 0;
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     onPostComment(comment);
-    setComment('');
-  }
-  
+    setComment("");
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -33,7 +32,9 @@ export default function CommentForm({onPostComment}: Props) {
       />
       <button
         disabled={buttonDisabled}
-        className={`font-bold text-sky-500 w-20 text-center ${buttonDisabled ? 'text-sky-300' : 'text-sky-500'}`}
+        className={`font-bold text-sky-500 w-20 text-center ${
+          buttonDisabled ? "text-sky-300" : "text-sky-500"
+        }`}
       >
         등록
       </button>

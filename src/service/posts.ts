@@ -1,6 +1,6 @@
 import { ResponsePost, ResponsePosts } from "@/model/post";
 import qs from "qs";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { ActionBarUser, ResponseUser } from "@/model/user";
 
 export async function getPostsByEmail(email: string) {
@@ -34,6 +34,7 @@ export async function getPostsByEmail(email: string) {
         },
       },
     },
+    sort: ["createdAt:desc"], // 최신순
   });
 
   const response = await axios.get(
@@ -342,9 +343,11 @@ export async function updateBookmarks(user: ActionBarUser, postId: number) {
 
 export async function addComment(
   userId: number,
-  postId: number,
+  postId: number | null,
   comment: string
 ) {
+  if (postId === null) throw new Error("postId is null");
+
   const result = await axios.post(
     `https://brain1401.duckdns.org:1402/api/insta-post-comments/`,
     {
@@ -367,46 +370,82 @@ export async function addComment(
 }
 
 export async function createPost(userId: number, text: string, file: Blob) {
+  let isSuccessful = true;
+  let error = false;
+  let newPostId: number | null = null;
+  let newFormData = new FormData();
 
- 
-  const creationResponse = await axios.post(
-    "https://brain1401.duckdns.org:1402/api/insta-posts",
-    {
-      author: {
-        connect: [userId]
+  try {
+    // 포스트 생성
+    const creationResponse = await axios.post(
+      "https://brain1401.duckdns.org:1402/api/insta-posts",
+      {
+        author: {
+          connect: [userId],
+        },
       },
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
-      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+        },
+      }
+    );
+    newPostId = creationResponse.data.data.id;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      console.log(err.response?.status);
+      console.log("creation error");
     }
-  );
+    error = true;
+    isSuccessful = false;
+  }
 
-  const newPostId = creationResponse.data.data.id;
-
-  const newFormData = new FormData();
-  newFormData.append("files", file);
-  newFormData.append("ref", "api::insta-post.insta-post");
-  newFormData.append("refId", newPostId);
-  newFormData.append("field", "photo");
-
-  const photoResponse = await axios.post(
-    "https://brain1401.duckdns.org:1402/api/upload",
-    newFormData,
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
-        "Content-Type": "multipart/form-data",
-      },
+  try {
+    // 위에서 생성한 포스트에사진 넣기
+    newFormData = new FormData();
+    newFormData.append("files", file);
+    newFormData.append("ref", "api::insta-post.insta-post");
+    newFormData.append("refId", newPostId?.toString() ?? "");
+    newFormData.append("field", "photo");
+    await axios.post(
+      "https://brain1401.duckdns.org:1402/api/upload",
+      newFormData,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      console.log(err.response?.status);
+      console.log("upload error");
     }
-  );
-  const photoId = await photoResponse.data[0].id;
 
+    error = true;
+    isSuccessful = false;
 
-  await addComment(userId, newPostId, text);
+    try {
+      await axios.delete(
+        `https://brain1401.duckdns.org:1402/api/insta-posts/${newPostId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
+          },
+        }
+      );
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        console.log(err.response?.status);
+        console.log("delete error");
+      }
+      error = true;
+      isSuccessful = false;
+    }
+  }
 
-  
+  if (!error) await addComment(userId, newPostId, text);
 
-  return photoResponse.statusText;
+  return isSuccessful;
 }
