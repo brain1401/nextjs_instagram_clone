@@ -393,8 +393,8 @@ export async function createPost(userId: number, text: string, file: Blob) {
     newPostId = creationResponse.data.data.id;
   } catch (err) {
     if (err instanceof AxiosError) {
-      console.log(err.response?.status);
-      console.log("creation error");
+      console.error(err.response?.status);
+      console.error("creation error");
     }
     error = true;
     isSuccessful = false;
@@ -419,8 +419,8 @@ export async function createPost(userId: number, text: string, file: Blob) {
     );
   } catch (err) {
     if (err instanceof AxiosError) {
-      console.log(err.response?.status);
-      console.log("upload error");
+      console.error(err.response?.status);
+      console.error("upload error");
     }
 
     error = true;
@@ -437,8 +437,8 @@ export async function createPost(userId: number, text: string, file: Blob) {
       );
     } catch (err) {
       if (err instanceof AxiosError) {
-        console.log(err.response?.status);
-        console.log("delete error");
+        console.error(err.response?.status);
+        console.error("delete error");
       }
       error = true;
       isSuccessful = false;

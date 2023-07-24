@@ -18,7 +18,6 @@ export default function PostDetail({ post, handlePostComment, handleLike, handle
   if (!post) {
     return <BeatLoader size={30} className="mt-32 text-center" />;
   }
-  console.log(post);
   return (
     <section className="flex w-full h-full">
       <div className="relative basis-3/5">

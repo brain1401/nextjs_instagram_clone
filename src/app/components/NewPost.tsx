@@ -46,7 +46,6 @@ export default function NewPost({ user }: Props) {
     const files = e.dataTransfer?.files;
     if (files && files[0]) {
       setFile(files[0]);
-      console.log(files[0]);
     }
   };
 
@@ -65,14 +64,13 @@ export default function NewPost({ user }: Props) {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(res.data);
       if (res.data === false) {
         setError(`${res.status} ${res.statusText}`);
         return;
       }
       router.push("/");
     } catch (err) {
-      console.log(err);
+      console.error(err);
       if (axios.isAxiosError(err)) {
         setError(err.response?.data ?? err.toString());
       }
