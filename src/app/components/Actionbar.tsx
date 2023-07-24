@@ -28,11 +28,9 @@ export default function Actionbar({
   const { user } = useMe();
   const { setLike, setBookmark } = usePosts();
 
-  const liked = Boolean(post.likes.find((item) => item.id === user?.id));
-  const bookmarked = Boolean(
-    post.bookmarkUsers?.find(item => item.id === user?.id)
-  );
-
+  const liked = post.likes.some(item => item.id === user?.id);
+  const bookmarked = post.bookmarkUsers.some(item => item.id === user?.id);
+  
   const handleLike = (like: boolean) => {
     user && setLike(post, user, like);
   };

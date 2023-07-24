@@ -109,15 +109,15 @@ export default function useTabPosts(displayname: string, query: string) {
     ) => {
       if (!user) return;
       const bookmarks = post.bookmarkUsers ?? [];
-      const newPost:ResponsePost = {
+      const newPost: ResponsePost = {
         ...post,
         bookmarkUsers: bookmark
           ? bookmarks.filter((item) => item.id !== user.id)
-          :  [
+          : [
               ...bookmarks,
               {
+                id: user.id,
                 displayname: user.displayname,
-                id: post.id,
               },
             ],
       };

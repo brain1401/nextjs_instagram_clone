@@ -86,7 +86,7 @@ export default function usePosts() {
               ...bookmarks,
               {
                 displayname: user.displayname,
-                id: post.id,
+                id: user.id,
               },
             ],
       };
@@ -95,7 +95,7 @@ export default function usePosts() {
       postMutate(updateBookmarks(post.id), {
         optimisticData: newPosts,
         populateCache: false,
-        revalidate: true,
+        revalidate: false,
         rollbackOnError: true,
       });
     },
