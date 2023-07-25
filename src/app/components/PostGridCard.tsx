@@ -35,7 +35,7 @@ export default function PostGridCard({
         fill
         sizes="650px"
         priority={priority}
-        className="object-cover"
+        className="object-cover cursor-pointer"
         onClick={handleOpenPost}
       />
     </div>

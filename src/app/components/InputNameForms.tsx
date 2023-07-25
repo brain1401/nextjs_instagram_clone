@@ -62,7 +62,7 @@ export default function InputNameForms() {
         setInputName={setRealname}
       />
       <button
-        className="w-full border border-cyan-400 rounded font-bold"
+        className="w-full font-bold border rounded border-cyan-400"
         onClick={onClick}
       >
         제출

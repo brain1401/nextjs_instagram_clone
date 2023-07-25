@@ -80,14 +80,14 @@ export default function NewPost({ user }: Props) {
   };
 
   return (
-    <section className="w-full max-w-xl flex flex-col items-center mt-6">
+    <section className="flex flex-col items-center w-full max-w-xl mt-6">
       {loading && (
         <div className="absolute inset-0 z-20 text-center bg-sky-500/20 pt-[30%]">
           <GridSpinner />
         </div>
       )}
       {error && (
-        <p className="w-full bg-red-100 text-red-600 text-center p-4 mb-4 font-bold">
+        <p className="w-full p-4 mb-4 font-bold text-center text-red-600 bg-red-100">
           {error}
         </p>
       )}
@@ -95,7 +95,10 @@ export default function NewPost({ user }: Props) {
         displayname={user.displayname}
         userimage={user.userimage}
       />
-      <form className="w-full flex flex-col mt-2" onSubmit={handleSubmit}>
+      <form
+        className="flex flex-col justify-center items-center mt-2 md:w-[30rem] md:items-center"
+        onSubmit={handleSubmit}
+      >
         <input
           className="hidden"
           type="file"
@@ -105,8 +108,8 @@ export default function NewPost({ user }: Props) {
           onChange={handleChange}
         />
         <label
-          className={`w-full h-60 flex flex-col items-center justify-center ${
-            !file && "border border-sky-500 border-dashed"
+          className={`md:w-full md:h-60 h-[10rem] w-full mb-3 flex flex-col items-center justify-center ${
+            !file && "border border-sky-500 border-dashed "
           }`}
           htmlFor="input-upload"
           onDragEnter={handleDrag}
@@ -115,7 +118,7 @@ export default function NewPost({ user }: Props) {
           onDrop={handleDrop}
         >
           {dragging && (
-            <div className="absolute inset-0 z-10 bg-sky-500/20 pointer-events-none" />
+            <div className="absolute inset-0 z-10 pointer-events-none bg-sky-500/20" />
           )}
           {!file && (
             <div className="flex flex-col items-center pointer-events-none">
@@ -136,7 +139,7 @@ export default function NewPost({ user }: Props) {
           )}
         </label>
         <textarea
-          className="outline-none text-lg border border-neutral-300"
+          className="w-full text-lg border outline-none border-neutral-300"
           name="text"
           id="input-text"
           required
@@ -144,12 +147,14 @@ export default function NewPost({ user }: Props) {
           placeholder={"코멘트를 작성하세요!"}
           ref={textRef}
         ></textarea>
-        <button
-          className="w-[8rem] h-8 bg-blue-400 rounded-md text-white "
-          onClick={() => {}}
-        >
-          게시
-        </button>
+        <div>
+          <button
+            className="w-[8rem] h-8 bg-blue-400 rounded-md text-white mt-3"
+            onClick={() => {}}
+          >
+            게시
+          </button>
+        </div>
       </form>
     </section>
   );

@@ -19,7 +19,7 @@ export default function SearchUser() {
 
   return (
     <section className="text-center">
-      <SearchBar state={input} setState={setInput} className="mb-5" />
+      <SearchBar state={input} setState={setInput} className="w-[20rem] md:w-[40rem] md:mb-5" />
       {isLoading && <BeatLoader className="mt-10" />}
       <ul className="text-start">
         {!isLoading &&
@@ -31,7 +31,7 @@ export default function SearchUser() {
           ))}
       </ul>
       {!isLoading && !error && users && users.length === 0 && (
-        <p className="font-bold text-xl">찾는 사용자가 없습니다!</p>
+        <p className="text-xl font-bold">찾는 사용자가 없습니다!</p>
       )}
     </section>
   );

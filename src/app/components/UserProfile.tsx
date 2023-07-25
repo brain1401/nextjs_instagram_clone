@@ -33,10 +33,10 @@ export default async function UserProfile({ user }: Props) {
 
   return (
     <>
-      <section className="w-full flex justify-center border-b border-neutral-300 py-12">
-        <div className="mt-10 flex items-center">
+      <section className="flex justify-center w-full py-12 border-b border-neutral-300">
+        <div className="flex items-center md:mt-10">
           <Avatar image={user?.userimage} size="xl" highlight />
-          <div className="ml-8 w-[13rem] text-base">
+          <div className="md:ml-8 md:w-[13rem] md:text-base md:px-0 px-5 w-[13rem] text-sm">
             <div className="flex gap-5">
               <h1 className="text-xl">{user?.displayname}</h1>
               {renderButton(sessionUser, user)}
@@ -56,7 +56,7 @@ export default async function UserProfile({ user }: Props) {
               </p>
             </div>
             <div>
-              <p className="font-bold text-xl">{user.realname}</p>
+              <p className="text-xl font-bold">{user.realname}</p>
             </div>
           </div>
         </div>

@@ -9,10 +9,10 @@ type Props = {
 export default function UserCard({user}: Props) {
 
   return (
-    <Link href={`/user/${user.displayname}`} className="flex border h-24 w-11/12 mx-auto m-2 border-gray-300 rounded-sm items-center pl-3 bg-white hover:bg-neutral-50">
+    <Link href={`/user/${user.displayname}`} className="flex items-center w-11/12 h-24 pl-3 m-2 mx-auto bg-white border border-gray-300 rounded-sm hover:bg-neutral-50">
       <Avatar image={user.userimage} />
       <div className="flex flex-col ml-3 text-neutral-500">
-        <p className="text-black font-bold">{user.displayname}</p>
+        <p className="font-bold text-black">{user.displayname}</p>
         <p>{user.realname}</p>
         <p className="text-sm"> {`${user.followers}팔로워 ${user.followings}팔로잉`}</p>
       </div>

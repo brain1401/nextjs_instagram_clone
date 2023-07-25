@@ -2,7 +2,7 @@
 import Link from "next/link";
 import HomeIcon from "./ui/icons/HomeIcon";
 import SearchIcon from "./ui/icons/SearchIcon";
-import {usePathname} from 'next/navigation'
+import { usePathname } from "next/navigation";
 import PlusIcon from "./ui/icons/PlusIcon";
 import ColorButton from "./ui/ColorButton";
 import { useSession, signIn, signOut } from "next-auth/react";
@@ -32,19 +32,17 @@ const menu = [
 export default function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
- const {
-   user,
-   isLoading: loading,
-   error,
- } = useMe();
+  const { user, isLoading: loading, error } = useMe();
 
   return (
-    <nav className="flex h-12 justify-between items-center">
+    <nav className="flex items-center justify-between h-12 px-5">
       <Link href="/">
-        <h1 className="font-bold text-3xl px-10">Instagram</h1>
+        <h1 className="text-2xl font-bold md:text-3xl md:px-10">
+          Instagram
+        </h1>
       </Link>
 
-      <ul className="flex items-center gap-6 mr-14 ">
+      <ul className="flex items-center gap-[0.5rem] md:gap-6 md:mr-14 ">
         {menu.map((item) => (
           <li key={item.href}>
             <Link href={item.href}>

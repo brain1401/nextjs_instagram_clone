@@ -23,15 +23,15 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${openSans.className}bg-neutral-50 w-full overflow-auto`}
+        className={`${openSans.className}bg-neutral-50 w-full h-fit overflow-auto`}
       >
         <AuthContext>
-          <header className="sticky top-0 bg-white z-10 border-b">
+          <header className="sticky top-0 z-10 bg-white border-b">
             <div className="max-w-screen-xl mx-auto">
               <Navbar />
             </div>
           </header>
-          <main className="w-full flex max-w-screen-xl mx-auto justify-center">
+          <main className="flex justify-center w-full max-w-screen-xl mx-auto">
             <SWRConfigContext>{children}</SWRConfigContext>
           </main>
         </AuthContext>

@@ -31,7 +31,7 @@ export default function UserPosts({ user }: Props) {
       <ul className="flex justify-center uppercase ">
         {tabs.map((tab) => (
           <li
-            className={`mx-12 p-4 cursor-pointer border-black ${
+            className={`md:mx-12 md:p-4 mx-8 cursor-pointer border-black ${
               tab.type === query && "font-bold border-t"
             }`}
             key={tab.type}
