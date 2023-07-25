@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
+import { MoonLoader } from "react-spinners";
 
 type Props = {
   type: "Displayname" | "Realname";
@@ -13,19 +14,21 @@ type Props = {
 export default function InputNameForm({
   type,
   isValid,
-  setIsValid, 
+  setIsValid,
   inputName,
   setInputName,
 }: Props) {
   const text = type === "Displayname" ? "유저 이름" : "실명";
   const [isLoading, setIsLoading] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
+  const [isFirstClicked, setIsFirstClicked] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputName(e.target.value);
   };
 
   const handleCheckClick = async () => {
+    setIsFirstClicked(true);
     setIsLoading(true);
     try {
       const response = await axios.get(`api/check${type}/${inputName}`);
@@ -69,7 +72,19 @@ export default function InputNameForm({
                 검사
               </button>
             </td>
-            <td>{isValid ? "☑️" : "⚠️"}</td>
+            <td>
+              {isFirstClicked ? (
+                isLoading ? (
+                  <MoonLoader size={20} color="blue" />
+                ) : isValid ? (
+                  "☑️"
+                ) : (
+                  "⚠️"
+                )
+              ) : (
+                ""
+              )}
+            </td>
           </tr>
         </tbody>
       </table>

@@ -4,7 +4,7 @@ import { isExistDisplayname } from "@/service/user";
 import { authOptions } from "../../auth/[...nextauth]/route";
 
 
-export async function GET(request: Request,{ params }: {params: {displayname: string}}) {
+export async function GET(_: Request,{ params }: {params: {displayname: string}}) {
   const session = await getServerSession(authOptions);
 
   if (!session) {

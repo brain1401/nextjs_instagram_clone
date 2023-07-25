@@ -1,7 +1,6 @@
 "use client";
-
 import InputNameForm from "./InputNameForm";
-import {useState} from 'react';
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
@@ -11,6 +10,14 @@ export default function InputNameForms() {
 
   const [displayname, setdisplayname] = useState("");
   const [realname, setRealname] = useState("");
+
+  useEffect(() => {
+    setIsDisplaynameValid(false);
+  }, [displayname]);
+
+  useEffect(() => {
+    setIsRealnameValid(false);
+  }, [realname]);
 
   const router = useRouter();
   const onClick = () => {
@@ -25,7 +32,13 @@ export default function InputNameForms() {
           displayname: displayname,
           realname: realname,
         })
-        .then(() => router.push("/"));
+        .then((res) => {
+          const isSuccess = res.data;
+
+          if (isSuccess) {
+            router.push("/");
+          }
+        });
     } catch (error) {
       console.error(error);
     }
@@ -33,6 +46,7 @@ export default function InputNameForms() {
 
   return (
     <section>
+      <div className="mt-10" />
       <InputNameForm
         type="Displayname"
         isValid={isDisplaynameValid}

@@ -4,7 +4,7 @@ import { isExistRealname } from "@/service/user";
 import { authOptions } from "../../auth/[...nextauth]/route";
 
 export async function GET(
-  request: Request,
+  _: Request,
   { params }: { params: { realname: string } }
 ) {
   const session = await getServerSession(authOptions);

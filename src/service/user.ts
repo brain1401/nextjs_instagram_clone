@@ -229,24 +229,30 @@ export async function setUserNamesByEmail(
   email: string
 ) {
   const user = await getUserByEmail(email);
+  const isValiedDisplayname = await isExistDisplayname(displayname);
+  const isValiedRealname = await isExistRealname(realname);
+
+  if (isValiedDisplayname || isValiedRealname || !user)  {
+    return false;
+  }
 
   const data = {
     displayname: displayname,
     realname: realname,
   };
-  const response =
-    user &&
-    (await axios.put(
-      `https://brain1401.duckdns.org:1402/api/insta-users/${user.id}`,
-      {
-        data: data,
+  const response = await axios.put(
+    `https://brain1401.duckdns.org:1402/api/insta-users/${user.id}`,
+    {
+      data: data,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
-        },
-      }
-    ));
+    }
+  );
+
+  return response.statusText === "OK";
 }
 
 export async function searchUsers(keyword?: string) {
@@ -397,12 +403,11 @@ export async function getActionBarUserByEmail(email: string) {
 }
 
 export async function handleUnfollow(userId: number, sessionUserId: number) {
-
   const data = {
     followings: {
-      disconnect: [userId]
-    }
-  }
+      disconnect: [userId],
+    },
+  };
 
   const response = await axios.put(
     `https://brain1401.duckdns.org:1402/api/insta-users/${sessionUserId}`,
@@ -420,7 +425,6 @@ export async function handleUnfollow(userId: number, sessionUserId: number) {
 }
 
 export async function handleFollow(userId: number, sessionUserId: number) {
-
   const data = {
     followings: {
       connect: [userId],
