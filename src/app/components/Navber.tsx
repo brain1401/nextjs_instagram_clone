@@ -42,7 +42,7 @@ export default function Navbar() {
         </h1>
       </Link>
 
-      <ul className="flex items-center gap-[0.5rem] md:gap-6 md:mr-14 ">
+      <ul className="flex items-center gap-[0.3rem] md:gap-6 md:mr-14 ">
         {menu.map((item) => (
           <li key={item.href}>
             <Link href={item.href}>

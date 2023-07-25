@@ -14,11 +14,11 @@ export default function ColorButton({
 }: Props) {
   return (
     <div
-      className={`rounded-md border bg-gradient-to-bl from-fuchsia-600 via-rose-500 to-amber-300 p-[0.125rem] w-[3.5rem] md:w-fit
+      className={`rounded-md border bg-gradient-to-bl from-fuchsia-600 via-rose-500 to-amber-300 p-[0.1rem] w-fit
       ${size === "big" ? "p-[0.3rem]" : "p-[0.125rem]"}`}
     >
       <button
-        className={`${className} bg-white text-[0.5rem] font-bold md:text-center  md:rounded-sm md:px-3 md:hover:opacity-90 md:transition-opacity md:text-base 
+        className={`${className} bg-white text-xs w-[3.6rem] font-bold md:text-center  md:rounded-sm md:px-3 md:hover:opacity-90 md:transition-opacity md:text-base md:w-fit
         ${size === "big" ? "p-4 text-2xl" : "p-[0.3rem] text-base"}`}
         onClick={onClick}
       >
