@@ -30,14 +30,14 @@ export default function FollowButton({ type, userId }: Props) {
     <>
       <div className="relative">
         {isUpdating && (
-          <div className="absolute inset-0 flex justify-center items-center">
+          <div className="absolute inset-0 flex items-center justify-center">
             <PulseLoader size={6} />
           </div>
         )}
         <button
           disabled={isUpdating}
           onClick={handleFollow}
-          className={`bg-rose-500 w-[7rem] h-[1.7rem] text-[0.9rem] font-bold text-white rounded-md hover:bg-rose-600 ${
+          className={`bg-rose-500 w-[5rem] h-[1.5rem] text-xs relative top-1 md:static md:w-[7rem] md:h-[1.7rem] md:text-[0.9rem] font-bold text-white rounded-md hover:bg-rose-600 ${
             isUpdating && "opacity-80"
           }`}
         >

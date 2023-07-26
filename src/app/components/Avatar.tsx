@@ -44,7 +44,7 @@ function getContainerSize(size: AvatarSize): string {
     case "large":
       return "w-[68px] h-[68px]";
     case "xl":
-      return "w-[7.5rem] h-[7.5rem]"
+      return "w-[5.8rem] h-[5.8rem] md:w-[7.5rem] md:h-[7.5rem]"
   }
 }
 
@@ -57,6 +57,6 @@ function getImageSizeStyle(size: AvatarSize): string {
     case "large":
       return "w-16 h-16 p-[0.2rem]";
     case 'xl':
-      return "w-[7rem] h-[7rem] p-[0.14rem]"
+      return "w-[5.5rem] h-[5.5rem] p-[0.1rem] md:w-[7rem] md:h-[7rem] md:p-[0.14rem]";
   }
 }

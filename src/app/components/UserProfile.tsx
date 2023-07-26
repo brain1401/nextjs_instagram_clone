@@ -14,6 +14,7 @@ export default async function UserProfile({ user }: Props) {
   const sessionUser =
     session?.user?.email && (await getUserByEmail(session.user.email));
 
+    
   const renderButton = (
     sessionUser: "" | ResponseUser | null | undefined,
     user: ProfileUser
@@ -37,8 +38,8 @@ export default async function UserProfile({ user }: Props) {
         <div className="flex items-center md:mt-10">
           <Avatar image={user?.userimage} size="xl" highlight />
           <div className="md:ml-8 md:w-[13rem] md:text-base md:px-0 px-5 w-[13rem] text-sm">
-            <div className="flex gap-5">
-              <h1 className="text-xl">{user?.displayname}</h1>
+            <div className="flex justify-between w-full md:justify-normal md:gap-5">
+              <h1 className="flex items-center justify-center text-xl ">{user?.displayname}</h1>
               {renderButton(sessionUser, user)}
             </div>
             <div className="flex justify-between my-2">
