@@ -37,9 +37,7 @@ export default function Navbar() {
   return (
     <nav className="flex items-center justify-between h-12 px-5">
       <Link href="/">
-        <h1 className="text-2xl font-bold md:text-3xl md:px-10">
-          Instagram
-        </h1>
+        <h1 className="text-2xl font-bold md:text-3xl md:px-10">Instagram</h1>
       </Link>
 
       <ul className="flex items-center gap-[0.3rem] md:gap-6 md:mr-14 ">
@@ -60,9 +58,17 @@ export default function Navbar() {
         )}
         <li>
           {session ? (
-            <ColorButton onClick={() => signOut()} text="로그아웃" />
+            <ColorButton
+              onClick={() => signOut()}
+              text="로그아웃"
+              className="w-[3.6rem]"
+            />
           ) : (
-            <ColorButton onClick={() => signIn()} text="로그인" />
+            <ColorButton
+              onClick={() => signIn()}
+              text="로그인"
+              className="w-[3.6rem]"
+            />
           )}
         </li>
       </ul>

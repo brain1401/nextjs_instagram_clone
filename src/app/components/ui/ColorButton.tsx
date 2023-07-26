@@ -18,7 +18,7 @@ export default function ColorButton({
       ${size === "big" ? "p-[0.3rem]" : "p-[0.125rem]"}`}
     >
       <button
-        className={`${className} bg-white text-xs w-[3.6rem] font-bold md:text-center  md:rounded-sm md:px-3 md:hover:opacity-90 md:transition-opacity md:text-base md:w-fit
+        className={`${className} bg-white text-xs font-bold md:text-center  md:rounded-sm md:px-3 md:hover:opacity-90 md:transition-opacity md:text-base md:w-fit
         ${size === "big" ? "p-4 text-2xl" : "p-[0.3rem] text-base"}`}
         onClick={onClick}
       >

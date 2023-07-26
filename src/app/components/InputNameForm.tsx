@@ -7,7 +7,7 @@ type Props = {
   type: "Displayname" | "Realname";
   isValid: boolean;
   setIsValid: React.Dispatch<React.SetStateAction<boolean>>;
-  inputName: string;
+  inputName: string
   setInputName: React.Dispatch<React.SetStateAction<string>>;
 };
 
@@ -45,8 +45,8 @@ export default function InputNameForm({
       <table className="m-2">
         <tbody>
           <tr>
-            <td className="w-[8rem] text-right">
-              <span>{`사용할 ${text}`}</span>
+            <td className="w-[5rem] text-right">
+              <span className="text-sm md:text-base">{`${text}`}</span>
             </td>
             <td>
               <input
@@ -58,7 +58,7 @@ export default function InputNameForm({
                       ? "border-cyan-400"
                       : "border-red-600"
                     : "border-gray-300"
-                }`}
+                } rounded w-[10rem] md:w-[20rem] md:ml-3 md:mr-3 md:px-3 md:py-1 md:text-base`}
                 type="text"
                 value={inputName}
                 onChange={handleInputChange}
@@ -66,7 +66,7 @@ export default function InputNameForm({
             </td>
             <td>
               <button
-                className="ml-3 w-[4rem] border border-gray-400 rounded"
+                className="ml-3 border border-gray-400 rounded w-[4rem] md:ml-3 md:px-3 md:py-1 md:text-base"
                 onClick={handleCheckClick}
               >
                 검사

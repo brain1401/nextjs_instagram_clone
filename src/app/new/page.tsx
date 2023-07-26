@@ -2,7 +2,7 @@ import { Metadata } from "next"
 import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation";
 import NewPost from "../components/NewPost";
-import { getUserByEmail } from "@/service/user";
+import { getUserByEmail, isNewUser } from "@/service/user";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export const metadata:Metadata = {
@@ -15,7 +15,12 @@ export default async function NewPostPage() {
   if(!session || !session.user?.email) {
     redirect('/auth/signin')
   }
-  const user = await getUserByEmail(session.user.email);
+  
+  const newUser = await isNewUser(session.user.email);
+  if (newUser) {
+    redirect("/enter-details");
+  }
+    const user = await getUserByEmail(session.user.email);
 
   return (
     <NewPost user={user}/>

@@ -45,8 +45,9 @@ export default function InputNameForms() {
   };
 
   return (
-    <section>
-      <div className="mt-10" />
+    <section className="flex flex-col items-center">
+      <h1 className="mt-10 text-2xl font-bold">기본 정보 입력</h1>
+      <div className="mt-3" />
       <InputNameForm
         type="Displayname"
         isValid={isDisplaynameValid}
@@ -62,10 +63,10 @@ export default function InputNameForms() {
         setInputName={setRealname}
       />
       <button
-        className="w-full font-bold border rounded border-cyan-400"
+        className="w-[10rem] p-1 mt-3 font-bold border rounded border-cyan-400 text-base md:text-lg "
         onClick={onClick}
       >
-        제출
+        확인
       </button>
     </section>
   );
