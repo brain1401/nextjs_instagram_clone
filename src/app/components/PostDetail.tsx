@@ -31,9 +31,9 @@ export default function PostDetail({
     <section className="flex flex-col md:flex md:flex-row md:w-full md:h-full">
       {!isMobile ? ( // PC
         <>
-          <div className="relative basis-3/5">
+          <div className="relative h-[50rem] basis-3/5">
             <Image
-              className="object-cover"
+              className="object-contain"
               src={imageServerUrl + post?.photo[0].url}
               alt={`${post.author.displayname} 이 만든 이미지`}
               priority
