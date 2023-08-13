@@ -1,34 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NextJS Instagram 클론 코딩 연습 프로젝트
 
-## Getting Started
+## 프로젝트의 비전
+이 프로젝트는 단순한 클론 코딩을 넘어 NextJS 13 버전의 `App Router` 등의 특징과 강점을 깊이 있게 탐구하고 활용하는 것을 목표로 하였습니다. Instagram의 인터페이스와 기능을 비슷하게 재현함으로써 현대 웹 개발 트렌드와 기술을 체험하고 이를 실제 개발 환경에서 어떻게 활용할 수 있을지 고민하였습니다.
 
-First, run the development server:
+## 프로젝트의 의의
+- NextJS 13버전의 새로운 기능과 최적화 기법에 대한 깊은 이해
+- 실제 서비스를 클론함으로써 복잡한 웹 애플리케이션의 아키텍처와 기능 구현에 대한 경험
+- 다양한 기술 스택의 조합을 통한 효율적인 웹 애플리케이션 구축 방법 탐구
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## 사용 기술
+### 프론트엔드
+- **React**: 컴포넌트 기반의 UI 구축
+- **Next.js 13**: 서버 사이드 렌더링, 정적 사이트 생성 등 최신 웹 개발 기법 활용
+- **Typescript**: 안정적인 코드 작성을 위한 강력한 타입 시스템 활용
+- **Tailwind CSS**: 효율적이고 빠른 UI 디자인
+- **SWR**: 데이터 패칭을 위한 라이브러리, 사용자 경험 향상
+- **NextAuth**: 안전한 인증 방식 구현
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 백엔드
+- **strapi**: API 기반의 콘텐츠 관리 시스템
+- **nginx**: 효율적인 웹 서버 운영 및 리버스 프록시 구성
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 바로가기
+[인스타그램 클론 프로젝트 바로가기](https://instaclone.duckdns.org)
